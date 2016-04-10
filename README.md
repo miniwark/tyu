@@ -8,9 +8,11 @@ tyu
 Install
 -------
 
-*tyu* is writed in Go language.
+*tyu* is write with the Go language.
 
-TODO
+```
+go get github.com/miniwark/tyu
+```
 
 
 Depedencies
@@ -21,8 +23,9 @@ Depedencies
 
 Usage
 -----
-
-    > tyu
+```
+tyu
+```
 
 To quit just type `q`.
 
