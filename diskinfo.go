@@ -1,11 +1,11 @@
 package main
 
 // `disks` represents the physical disk usage statistics
-type disks struct {
+type diskinfo struct {
 }
 
 // return disk usage statistics
-func getDisks() disks {
-	result := disks{}
+func getDiskinfo() diskinfo {
+	result := diskinfo{}
 	return result
 }
