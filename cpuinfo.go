@@ -22,18 +22,21 @@ func getCPUinfo() cpuinfo {
 	}
 
 	result := cpuinfo{
-		count:     string(len(info)),
-		vendorID:  info[1].VendorID,
-		modelName: info[1].ModelName,
-		cpuMhz:    strconv.FormatFloat(info[1].Mhz, 'f', 2, 64),
+		count:     strconv.Itoa(len(info)),
+		vendorID:  info[0].VendorID, //BUG empty
+		modelName: info[0].ModelName,
+		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 2, 64),
 	}
 	return result
 }
 
 //TODO count cores ?
-//TODO convert Mhz to Ghz ?
 //TODO count the physicals id = multiples sockets
 
 //TODO We need to improve this. For now it take vendorID, modelName, etc from
 //the first CPU assuming than all CPUs are the same (probably OK)and than there
 //is only one socket (not true on servers)
+//
+// http://superuser.com/questions/388115/interpreting-output-of-cat-proc-cpuinfo
+// http://unix.stackexchange.com/questions/146051/number-of-processors-in-proc-cpuinfo
+//
