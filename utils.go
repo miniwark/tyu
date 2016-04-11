@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// convert a []int8 array to a string
+// convert and concatenate a []int8 array to a string
 // inspired by perterGo: https://groups.google.com/forum/#!topic/golang-nuts/Jel8Bb-YwX8
 func int8ArrayToString(char []int8) string {
 

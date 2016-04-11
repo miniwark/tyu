@@ -7,14 +7,14 @@ import (
 )
 
 // `hostinfo` represent the computer informations
-type hostinfo struct { //TODO rename and avoid `sysinfo`
+type hostinfo struct {
 	hostname        string // host name of the system ex 'mycomputer'
-	domainname      string // domain name of the system ex 'mydomain.com' //TODO
+	domainname      string // domain name of the system ex 'mydomain.com'
 	os              string // OS type ex 'Linux'
-	osRelease       string // OS release ex '4.2.0-35-generic' //TODO
+	osRelease       string // OS release ex '4.2.0-35-generic'
 	platform        string // OS distribution or vendor ex 'Ubuntu'
 	platformVersion string // OS distribution version ex '15.10'
-	arch            string // architectureex. 'x86_64' //TODO
+	arch            string // architectureex. 'x86_64'
 }
 
 // Get informations about the computer by using `syscall`and `gopesutil` packages
