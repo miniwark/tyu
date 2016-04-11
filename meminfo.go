@@ -32,13 +32,13 @@ func getMeminfo() meminfo {
 	}
 
 	result := meminfo{
-		memTotal:        strconv.FormatUint(virtual.Total, 10),
-		memUsed:         strconv.FormatUint(virtual.Used, 10),
-		memFree:         strconv.FormatUint(virtual.Free, 10),
+		memTotal:        strconv.FormatUint((virtual.Total / (1024 * 1024)), 10), // (1024*1024) to convert to MB from `gopesutil`
+		memUsed:         strconv.FormatUint((virtual.Used / (1024 * 1024)), 10),
+		memFree:         strconv.FormatUint((virtual.Free / (1024 * 1024)), 10),
 		memUsedPercent:  int(virtual.UsedPercent),
-		swapTotal:       strconv.FormatUint(swap.Total, 10),
-		swapUsed:        strconv.FormatUint(swap.Total, 10),
-		swapFree:        strconv.FormatUint(swap.Total, 10),
+		swapTotal:       strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
+		swapUsed:        strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
+		swapFree:        strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
 		swapUsedPercent: int(swap.UsedPercent),
 	}
 	return result
