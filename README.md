@@ -1,6 +1,6 @@
 tyu
 ===
-*tyu* is a small comand line utility to display basic system informations.
+*tyu* is a small command line utility to display basic system informations.
 
 *tyu* display system informations like, OS type, CPUs, memory size usage, disk usage and network trafic in real time. Tyu is intended to be a basic tool to check main informations in a quick and clear way. It **is not** intended to be another `top`, `iftop`, `iotop` (and alternatives) with a detailed monitoring.
 
