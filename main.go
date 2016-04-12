@@ -116,15 +116,31 @@ func main() {
 	cpuinfo := ui.NewList()
 	cpuinfo.BorderLabel = "CPU "
 	cpuinfo.Items = []string{
-		"[CPUs   ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
-		"[Vendor ](fg-cyan)" + cpu.vendorID,
-		"[Model  ](fg-cyan)" + cpu.modelName,
-		"[Speed  ](fg-cyan)" + cpu.cpuMhz + " Mhz",
+		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
+		"[Vendor      ](fg-cyan)" + cpu.vendorID,
+		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
+		"[Speed       ](fg-cyan)" + cpu.cpuMhz + " Mhz",
+		"[Temperature ](fg-cyan)", //TODO
 	}
 	cpuinfo.Width = 39
-	cpuinfo.Height = 6
+	cpuinfo.Height = 7
 	cpuinfo.X = 40
 	cpuinfo.Y = 9
+
+	// display bios and motherboard informations
+	bios := getBIOSinfo()
+	biosinfo := ui.NewList()
+	biosinfo.BorderLabel = "BIOS "
+	biosinfo.Items = []string{
+		"[Motherboard ](fg-cyan)" + bios.boardName,
+		"[Vendor      ](fg-cyan)" + bios.boardVendor,
+		"[BIOS        ](fg-cyan)" + bios.biosVendor,
+		"[Version     ](fg-cyan)" + bios.biosVersion + "  " + bios.biosDate,
+	}
+	biosinfo.Width = 39
+	biosinfo.Height = 6
+	biosinfo.X = 40
+	biosinfo.Y = 16
 
 	// display a quit help text
 	quit := ui.NewPar("[Type 'q' to exit](fg-white,bg-blue)")
@@ -160,6 +176,7 @@ func main() {
 			disk2Gauge, //TODO rename
 			hostinfo,
 			cpuinfo,
+			biosinfo,
 			quit,
 		)
 	}
