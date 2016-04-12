@@ -23,7 +23,7 @@ func getCPUinfo() cpuinfo {
 
 	result := cpuinfo{
 		count:     strconv.Itoa(len(info)),
-		vendorID:  info[0].VendorID, //BUG empty
+		vendorID:  info[0].VendorID, //BUG in `gopsutil`
 		modelName: info[0].ModelName,
 		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 2, 64),
 	}
