@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"syscall"
 
 	"github.com/shirou/gopsutil/host"
@@ -20,8 +21,8 @@ type hostinfo struct {
 // Get informations about the computer by using `syscall`and `gopesutil` packages
 func getHostinfo() hostinfo {
 
-	uts := syscall.Utsname{} //TODO add os check because this is not portable
-	err := syscall.Uname(&uts)
+	uts := syscall.Utsname{}   //TODO add an OS check because this is not portable
+	err := syscall.Uname(&uts) //TODO so we may use host.Info() for this
 	if err != nil {
 		panic(err) //TODO do not panic but manage the error
 	}
@@ -33,12 +34,12 @@ func getHostinfo() hostinfo {
 
 	result := hostinfo{
 		hostname:        info.Hostname,
-		domainname:      int8ArrayToString(uts.Domainname[:]),
-		os:              info.OS,
-		osRelease:       int8ArrayToString(uts.Release[:]),
-		platform:        info.Platform,
+		domainname:      int8SliceToString(uts.Domainname[:]),
+		os:              strings.Title(info.OS),
+		osRelease:       int8SliceToString(uts.Release[:]),
+		platform:        strings.Title(info.Platform),
 		platformVersion: info.PlatformVersion,
-		arch:            int8ArrayToString(uts.Machine[:]),
+		arch:            int8SliceToString(uts.Machine[:]),
 	}
 	return result
 }
