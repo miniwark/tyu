@@ -25,7 +25,7 @@ func getCPUinfo() cpuinfo {
 		count:     strconv.Itoa(len(info)),
 		vendorID:  info[0].VendorID, //BUG in `gopsutil`
 		modelName: info[0].ModelName,
-		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 2, 64),
+		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 0, 64),
 	}
 	return result
 }
@@ -40,3 +40,4 @@ func getCPUinfo() cpuinfo {
 // http://superuser.com/questions/388115/interpreting-output-of-cat-proc-cpuinfo
 // http://unix.stackexchange.com/questions/146051/number-of-processors-in-proc-cpuinfo
 //
+// TODO add temperature
