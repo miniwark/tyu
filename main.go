@@ -72,6 +72,27 @@ func main() {
 	swapTotal.Y = 7
 	swapTotal.Border = false
 
+	// display informations about the physical disks
+	// TODO only two or 3 physical disk add check and a for loop
+	disk := getDiskinfo()
+	disk1Gauge := ui.NewGauge()
+	disk1Gauge.BorderLabel = disk[0].device + " disk usage "
+	disk1Gauge.BarColor = ui.ColorBlue
+	disk1Gauge.Width = 39
+	disk1Gauge.Height = 3
+	disk1Gauge.X = 0
+	disk1Gauge.Y = 8
+	disk1Gauge.Percent = disk[0].usedPercent
+
+	disk2Gauge := ui.NewGauge()
+	disk2Gauge.BorderLabel = disk[1].device + " disk usage " //TODO this fail if only one disk
+	disk2Gauge.BarColor = ui.ColorBlue
+	disk2Gauge.Width = 39
+	disk2Gauge.Height = 3
+	disk2Gauge.X = 0
+	disk2Gauge.Y = 11
+	disk2Gauge.Percent = disk[1].usedPercent
+
 	// display system informations about the host
 	host := getHostinfo()
 	hostinfo := ui.NewList()
@@ -90,7 +111,7 @@ func main() {
 	hostinfo.X = 40
 	hostinfo.Y = 0
 
-	// display informations about the RAM and swap memory
+	// display informations about the CPUs
 	cpu := getCPUinfo()
 	cpuinfo := ui.NewList()
 	cpuinfo.BorderLabel = "CPU "
@@ -135,6 +156,8 @@ func main() {
 			swapUsed,
 			swapFree,
 			swapTotal,
+			disk1Gauge, //TODO rename and or stack gauges together
+			disk2Gauge, //TODO rename
 			hostinfo,
 			cpuinfo,
 			quit,
