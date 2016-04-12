@@ -12,6 +12,7 @@ type cpuinfo struct {
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
 	cpuMhz    string //
+	//TODO temperature and fan speed ?
 }
 
 // Get informations about the cpu by using `gopesutil` packages
