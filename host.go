@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/shirou/gopsutil/host"
 )
@@ -44,5 +45,16 @@ func getHostinfo() hostinfo {
 	return result
 }
 
-// uptime is in a separate func than `getHostinfo` to avoid unnecessary calls
+// Return the uptime by using `gopesutil` package in a redable string ex '10h10m01s'
+func getUptime() (uptime string) {
+	t, err := host.Uptime()
+	if err != nil {
+		panic(err) //TODO do not panic but manage the error
+	}
+
+	uptime = (time.Duration(t) * time.Second).String()
+	return uptime
+}
+
+// getUptime is in a separate func than `getHostinfo` to avoid unecessary calls
 // as all the host informations will normaly not change contrary to uptime
