@@ -2,6 +2,7 @@ package main
 
 import (
 	"strconv"
+	"time"
 
 	"github.com/shirou/gopsutil/cpu"
 )
@@ -11,7 +12,7 @@ type cpuinfo struct {
 	count     string // number of CPUs
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
-	cpuMhz    string //
+	cpuMhz    string // speed of the CPU
 	//TODO temperature and fan speed ?
 }
 
@@ -29,6 +30,16 @@ func getCPUinfo() cpuinfo {
 		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 0, 64),
 	}
 	return result
+}
+
+// get the system-wide CPU utilization percentage
+func getCPUpercent() (usedPercent int) {
+	percent, err := cpu.Percent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
+	if err != nil {
+		panic(err) //TODO do not panic but manage the error
+	}
+
+	return int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 }
 
 //TODO count cores ?
