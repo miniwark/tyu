@@ -42,6 +42,9 @@ func getCPUpercent() (usedPercent int) {
 	return int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 }
 
+// `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unecessary calls
+// as all the host informations will normaly not change contrary to uptime
+
 //TODO count cores ?
 //TODO count the physicals id = multiples sockets
 
