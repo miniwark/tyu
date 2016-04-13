@@ -59,7 +59,7 @@ Version 0.3
 - [ ] Add tests
 - [ ] Improve documentation
 - [ ] Continuous integration
-- [ ] Publish on sites like go-search.org, gobuild.io...
+- [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
 
 Version 0.4
 -----------
