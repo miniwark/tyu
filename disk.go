@@ -25,7 +25,7 @@ func getDiskinfo() []diskinfo {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	var result []diskinfo
+	var ret []diskinfo
 
 	// get usage stats for each partitions
 	for i := range partitions {
@@ -42,8 +42,8 @@ func getDiskinfo() []diskinfo {
 				free:        strconv.FormatUint(disk.Used, 10),
 				usedPercent: int(disk.UsedPercent),
 			}
-			result = append(result, d)
+			ret = append(ret, d)
 		}
 	}
-	return result
+	return ret
 }

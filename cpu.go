@@ -23,13 +23,13 @@ func getCPUinfo() cpuinfo {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	result := cpuinfo{
+	ret := cpuinfo{
 		count:     strconv.Itoa(len(info)),
 		vendorID:  info[0].VendorID, //BUG in `gopsutil`
 		modelName: info[0].ModelName,
 		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 0, 64),
 	}
-	return result
+	return ret
 }
 
 // get the system-wide CPU utilization percentage

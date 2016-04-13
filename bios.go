@@ -38,14 +38,14 @@ func getBIOSinfo() biosinfo {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	result := biosinfo{
+	ret := biosinfo{
 		boardName:   strings.TrimRight(string(boardname), "\n"), // Trimright remove the EOF carriage return
 		boardVendor: strings.TrimRight(string(boardvendor), "\n"),
 		biosVendor:  strings.TrimRight(string(biosvendor), "\n"),
 		biosVersion: strings.TrimRight(string(biosversion), "\n"),
 		biosDate:    strings.TrimRight(string(biosdate), "\n"),
 	}
-	return result
+	return ret
 }
 
 //TODO use `sysctl` and/or kenv interfaces`on BSD

@@ -33,7 +33,7 @@ func getHostinfo() hostinfo {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	result := hostinfo{
+	ret := hostinfo{
 		hostname:        info.Hostname,
 		domainname:      int8SliceToString(uts.Domainname[:]),
 		os:              strings.Title(info.OS),
@@ -42,7 +42,7 @@ func getHostinfo() hostinfo {
 		platformVersion: info.PlatformVersion,
 		arch:            int8SliceToString(uts.Machine[:]),
 	}
-	return result
+	return ret
 }
 
 // Return the uptime by using `gopesutil` package in a redable string ex '10h10m01s'
@@ -52,8 +52,7 @@ func getUptime() (uptime string) {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	uptime = (time.Duration(t) * time.Second).String()
-	return uptime
+	return (time.Duration(t) * time.Second).String()
 }
 
 // getUptime is in a separate func than `getHostinfo` to avoid unecessary calls

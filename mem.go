@@ -29,7 +29,7 @@ func getMeminfo() meminfo {
 		panic(err) //TODO do not panic but manage the error
 	}
 
-	result := meminfo{
+	ret := meminfo{
 		ramTotal:        strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024) to convert to GiB from `gopesutil`
 		ramUsed:         strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64),
 		ramUsedPercent:  int(ram.UsedPercent),
@@ -37,5 +37,5 @@ func getMeminfo() meminfo {
 		swapUsed:        strconv.FormatFloat(float64(swap.Used)/(1024*1024*1024), 'f', 2, 64),
 		swapUsedPercent: int(swap.UsedPercent),
 	}
-	return result
+	return ret
 }
