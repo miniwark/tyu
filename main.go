@@ -13,64 +13,23 @@ func main() {
 	}
 	defer ui.Close()
 
-	// display physical RAM and swap memory informations
-	memGauge := ui.NewGauge() //TODO try to draw the border around gauge, used, free and total
-	memGauge.BorderLabel = "Memory usage "
-	memGauge.BarColor = ui.ColorBlue
-	memGauge.Width = 39
-	memGauge.Height = 3
-	memGauge.X = 0
-	memGauge.Y = 0
+	// display physical RAM usage informations
+	ramGauge := ui.NewGauge() //TODO try to draw the border around gauge, used, free and total
+	ramGauge.BorderLabel = "RAM usage "
+	ramGauge.BarColor = ui.ColorBlue
+	ramGauge.Width = 39
+	ramGauge.Height = 3
+	ramGauge.X = 0
+	ramGauge.Y = 0
 
-	memUsed := ui.NewPar("Used")
-	memUsed.Height = 1
-	memUsed.Width = 13
-	memUsed.X = 1
-	memUsed.Y = 3
-	memUsed.Border = false
-
-	memFree := ui.NewPar("Free")
-	memFree.Height = 1
-	memFree.Width = 13
-	memFree.X = 14
-	memFree.Y = 3
-	memFree.Border = false
-
-	memTotal := ui.NewPar("Total")
-	memTotal.Height = 1
-	memTotal.Width = 13
-	memTotal.X = 27
-	memTotal.Y = 3
-	memTotal.Border = false
-
+	// display physical swap usage informations
 	swapGauge := ui.NewGauge()
 	swapGauge.BorderLabel = "Swap usage "
 	swapGauge.BarColor = ui.ColorBlue
 	swapGauge.Width = 39
 	swapGauge.Height = 3
 	swapGauge.X = 0
-	swapGauge.Y = 4
-
-	swapUsed := ui.NewPar("Used")
-	swapUsed.Height = 1
-	swapUsed.Width = 13
-	swapUsed.X = 1
-	swapUsed.Y = 7
-	swapUsed.Border = false
-
-	swapFree := ui.NewPar("Free")
-	swapFree.Height = 1
-	swapFree.Width = 13
-	swapFree.X = 14
-	swapFree.Y = 7
-	swapFree.Border = false
-
-	swapTotal := ui.NewPar("Total")
-	swapTotal.Height = 1
-	swapTotal.Width = 13
-	swapTotal.X = 27
-	swapTotal.Y = 7
-	swapTotal.Border = false
+	swapGauge.Y = 3
 
 	cpuGauge := ui.NewGauge()
 	cpuGauge.BorderLabel = "CPU usage "
@@ -78,7 +37,7 @@ func main() {
 	cpuGauge.Width = 39
 	cpuGauge.Height = 3
 	cpuGauge.X = 0
-	cpuGauge.Y = 8
+	cpuGauge.Y = 6
 
 	// display informations about the physical disks
 	// TODO only two or 3 physical disk add check and a for loop
@@ -89,7 +48,7 @@ func main() {
 	disk1Gauge.Width = 39
 	disk1Gauge.Height = 3
 	disk1Gauge.X = 0
-	disk1Gauge.Y = 11
+	disk1Gauge.Y = 9
 	disk1Gauge.Percent = disk[0].usedPercent
 
 	disk2Gauge := ui.NewGauge()
@@ -98,7 +57,7 @@ func main() {
 	disk2Gauge.Width = 39
 	disk2Gauge.Height = 3
 	disk2Gauge.X = 0
-	disk2Gauge.Y = 14
+	disk2Gauge.Y = 12
 	disk2Gauge.Percent = disk[1].usedPercent
 
 	// display system informations about the host
@@ -127,7 +86,7 @@ func main() {
 		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
 		"[Vendor      ](fg-cyan)" + cpu.vendorID,
 		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
-		"[Speed       ](fg-cyan)" + cpu.cpuMhz + " Mhz",
+		"[Frenquency  ](fg-cyan)" + cpu.cpuMhz + " Mhz",
 		"[Temperature ](fg-cyan)", //TODO
 	}
 	cpuinfo.Width = 39
@@ -162,26 +121,16 @@ func main() {
 	draw := func(t int) {
 		// update memory informations
 		mem := getMeminfo()
-		memGauge.Percent = mem.memUsedPercent
-		memUsed.Text = "[Used](fg-cyan) " + mem.memUsed + "MB"
-		memFree.Text = "[Free](fg-cyan) " + mem.memFree + "MB"
-		memTotal.Text = "[Total](fg-cyan) " + mem.memTotal + "MB"
+		ramGauge.Percent = mem.ramUsedPercent
+		ramGauge.Label = "{{percent}}% - " + mem.ramUsed + "/" + mem.ramTotal + " GiB"
 		swapGauge.Percent = mem.swapUsedPercent
-		swapUsed.Text = "[Used](fg-cyan) " + mem.swapUsed + "MB"
-		swapFree.Text = "[Free](fg-cyan) " + mem.swapFree + "MB"
-		swapTotal.Text = "[Total](fg-cyan) " + mem.swapTotal + "MB"
+		swapGauge.Label = "{{percent}}% - " + mem.swapUsed + "/" + mem.swapTotal + " GiB"
 
 		cpuGauge.Percent = getCPUpercent()
 
 		ui.Render(
-			memGauge,
-			memUsed,
-			memFree,
-			memTotal,
+			ramGauge,
 			swapGauge,
-			swapUsed,
-			swapFree,
-			swapTotal,
 			cpuGauge,
 			disk1Gauge, //TODO rename and or stack gauges together
 			disk2Gauge, //TODO rename

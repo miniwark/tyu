@@ -8,20 +8,18 @@ import (
 
 // `meminfo` represent the memory usage statistics
 type meminfo struct {
-	memTotal        string // total available memory in megabytes
-	memUsed         string // used memory in megabytes
-	memFree         string // free memory in megabytes
-	memUsedPercent  int    // used memory in percents of total memory
-	swapTotal       string // total available swap memory in megabytes
-	swapUsed        string // used swap memory in megabytes
-	swapFree        string // free swap memory in megabytes
+	ramTotal        string // total available memory in gigabytes
+	ramUsed         string // used memory in gigabytes
+	ramUsedPercent  int    // used memory in percents of total memory
+	swapTotal       string // total available swap memory in gigabytes
+	swapUsed        string // used swap memory in gigabytes
 	swapUsedPercent int    // used swap memory in percents of total memory
 }
 
 // Get memory usage informations by using `gopesutil` package
 // and then convert them to `string` or `int`
 func getMeminfo() meminfo {
-	virtual, err := mem.VirtualMemory()
+	ram, err := mem.VirtualMemory()
 	if err != nil {
 		panic(err) //TODO do not panic but manage the error
 	}
@@ -32,13 +30,11 @@ func getMeminfo() meminfo {
 	}
 
 	result := meminfo{
-		memTotal:        strconv.FormatUint((virtual.Total / (1024 * 1024)), 10), // (1024*1024) to convert to MB from `gopesutil`
-		memUsed:         strconv.FormatUint((virtual.Used / (1024 * 1024)), 10),
-		memFree:         strconv.FormatUint((virtual.Free / (1024 * 1024)), 10),
-		memUsedPercent:  int(virtual.UsedPercent),
-		swapTotal:       strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
-		swapUsed:        strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
-		swapFree:        strconv.FormatUint((swap.Total / (1024 * 1024)), 10),
+		ramTotal:        strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024) to convert to GiB from `gopesutil`
+		ramUsed:         strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64),
+		ramUsedPercent:  int(ram.UsedPercent),
+		swapTotal:       strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64),
+		swapUsed:        strconv.FormatFloat(float64(swap.Used)/(1024*1024*1024), 'f', 2, 64),
 		swapUsedPercent: int(swap.UsedPercent),
 	}
 	return result
