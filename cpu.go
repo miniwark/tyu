@@ -13,7 +13,7 @@ type cpuinfo struct {
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
 	cpuMhz    string // frequency of the CPU in Mhz
-	//TODO temperature and fan speed ?
+	//TODO temperature and fan speed ? see /sys/class/hwmon/hwmon0/device/hwmon/hwmon/temp1_input
 }
 
 // Get informations about the cpu by using `gopesutil` packages
