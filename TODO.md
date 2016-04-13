@@ -50,7 +50,7 @@ Note: partially done, need rework
 
 Version 0.2
 -----------
-- [ ] Re-factor variables names
+- [ ] Re-factor variables and function names. API stabilization.
 - [ ] Error handling
 
 
