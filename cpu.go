@@ -12,7 +12,7 @@ type cpuinfo struct {
 	count     string // number of CPUs
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
-	cpuMhz    string // speed of the CPU
+	cpuMhz    string // frequency of the CPU in Mhz
 	//TODO temperature and fan speed ?
 }
 
