@@ -88,7 +88,7 @@ func main() {
 		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
 		"[Vendor      ](fg-cyan)" + cpu.vendorID,
 		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
-		"[Frenquency  ](fg-cyan)" + cpu.cpuMhz + " Mhz",
+		"[Frequency   ](fg-cyan)" + cpu.cpuMhz + " Mhz",
 		"[Temperature ](fg-cyan)", //TODO
 	}
 	cpuinfo.Width = 39
