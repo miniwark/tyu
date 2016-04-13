@@ -64,7 +64,7 @@ func main() {
 	host := getHostinfo()
 	hostinfo := ui.NewList()
 	hostinfo.BorderLabel = "Host "
-	hostinfo.Items = []string{
+	hostitems := []string{
 		"[Hostname         ](fg-cyan)" + host.hostname,
 		"[Domain           ](fg-cyan)" + host.domainname,
 		"[OS               ](fg-cyan)" + host.os,
@@ -72,9 +72,11 @@ func main() {
 		"[Platform         ](fg-cyan)" + host.platform,
 		"[Platform version ](fg-cyan)" + host.platformVersion,
 		"[Architecture     ](fg-cyan)" + host.arch,
+		"[Uptime           ](fg-cyan)",
 	}
+	hostinfo.Items = hostitems
 	hostinfo.Width = 39
-	hostinfo.Height = 9
+	hostinfo.Height = 10
 	hostinfo.X = 40
 	hostinfo.Y = 0
 
@@ -92,7 +94,7 @@ func main() {
 	cpuinfo.Width = 39
 	cpuinfo.Height = 7
 	cpuinfo.X = 40
-	cpuinfo.Y = 9
+	cpuinfo.Y = 10
 
 	// display bios and motherboard informations
 	bios := getBIOSinfo()
@@ -107,7 +109,7 @@ func main() {
 	biosinfo.Width = 39
 	biosinfo.Height = 6
 	biosinfo.X = 40
-	biosinfo.Y = 16
+	biosinfo.Y = 17
 
 	// display a quit help text
 	quit := ui.NewPar("[Type 'q' to exit](fg-white,bg-blue)")
@@ -127,6 +129,8 @@ func main() {
 		swapGauge.Label = "{{percent}}% - " + mem.swapUsed + "/" + mem.swapTotal + " GiB"
 
 		cpuGauge.Percent = getCPUpercent()
+
+		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
 
 		ui.Render(
 			ramGauge,
