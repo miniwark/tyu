@@ -72,6 +72,14 @@ func main() {
 	swapTotal.Y = 7
 	swapTotal.Border = false
 
+	cpuGauge := ui.NewGauge()
+	cpuGauge.BorderLabel = "CPU usage "
+	cpuGauge.BarColor = ui.ColorBlue
+	cpuGauge.Width = 39
+	cpuGauge.Height = 3
+	cpuGauge.X = 0
+	cpuGauge.Y = 8
+
 	// display informations about the physical disks
 	// TODO only two or 3 physical disk add check and a for loop
 	disk := getDiskinfo()
@@ -81,7 +89,7 @@ func main() {
 	disk1Gauge.Width = 39
 	disk1Gauge.Height = 3
 	disk1Gauge.X = 0
-	disk1Gauge.Y = 8
+	disk1Gauge.Y = 11
 	disk1Gauge.Percent = disk[0].usedPercent
 
 	disk2Gauge := ui.NewGauge()
@@ -90,7 +98,7 @@ func main() {
 	disk2Gauge.Width = 39
 	disk2Gauge.Height = 3
 	disk2Gauge.X = 0
-	disk2Gauge.Y = 11
+	disk2Gauge.Y = 14
 	disk2Gauge.Percent = disk[1].usedPercent
 
 	// display system informations about the host
@@ -163,6 +171,8 @@ func main() {
 		swapFree.Text = "[Free](fg-cyan) " + mem.swapFree + "MB"
 		swapTotal.Text = "[Total](fg-cyan) " + mem.swapTotal + "MB"
 
+		cpuGauge.Percent = getCPUpercent()
+
 		ui.Render(
 			memGauge,
 			memUsed,
@@ -172,6 +182,7 @@ func main() {
 			swapUsed,
 			swapFree,
 			swapTotal,
+			cpuGauge,
 			disk1Gauge, //TODO rename and or stack gauges together
 			disk2Gauge, //TODO rename
 			hostinfo,
