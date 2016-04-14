@@ -18,7 +18,7 @@ Implement all this infos and gauges:
 - [x] Vendor
 - [x] Model
 - [x] Frequency
-- [x] Temperature
+- [ ] Temperature (Raspbian only)
 - [x] CPU usage gauge
 
 #### BIOS / Motherboard
@@ -77,3 +77,9 @@ Version 0.6
 Version 0.7
 -----------
 Version for bugs catching, more tests, suggestions, small improvements.
+
+version 0.8
+-----------
+
+#### CPUs
+- [ ] Temperature (lm-sebsors)
