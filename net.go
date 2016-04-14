@@ -8,8 +8,8 @@ import (
 
 // `netinfo` represent the network trafic informations
 type netinfo struct {
-	out string
-	in  string
+	up   string
+	down string
 }
 
 // Get informations about the net trafic
@@ -20,8 +20,8 @@ func getNetinfo() netinfo {
 	}
 
 	ret := netinfo{
-		out: strconv.FormatUint(ioconters[0].BytesSent, 10),
-		in:  strconv.FormatUint(ioconters[0].BytesRecv, 10),
+		up:   strconv.FormatUint(ioconters[1].BytesSent, 10),
+		down: strconv.FormatUint(ioconters[1].BytesRecv, 10),
 	}
 	return ret
 }
