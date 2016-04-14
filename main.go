@@ -60,6 +60,18 @@ func main() {
 	disk2Gauge.Y = 12
 	disk2Gauge.Percent = disk[1].usedPercent
 
+	// display information about the network activity
+	netinfo := ui.NewList()
+	netinfo.BorderLabel = "Network "
+	netitems := []string{
+		"[eth0 ](fg-green)", //TODO add a for loop, limit to 2 or 3 interfaces
+	}
+	netinfo.Items = netitems
+	netinfo.Width = 39
+	netinfo.Height = 3
+	netinfo.X = 0
+	netinfo.Y = 15
+
 	// display system informations about the host
 	host := getHostinfo()
 	hostinfo := ui.NewList()
@@ -128,6 +140,9 @@ func main() {
 		swapGauge.Percent = mem.swapUsedPercent
 		swapGauge.Label = "{{percent}}% - " + mem.swapUsed + "/" + mem.swapTotal + " GiB"
 
+		net := getNetinfo() //TODO need to calculte before - after see https://github.com/nicolargo/glances/blob/master/glances/plugins/glances_network.py
+		netitems[0] = "[eth0 ](fg-green)" + "Up " + net.up + " KiB Down " + net.down + " KiB"
+
 		cpuGauge.Percent = getCPUpercent()
 
 		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
@@ -138,6 +153,7 @@ func main() {
 			cpuGauge,
 			disk1Gauge, //TODO rename and or stack gauges together
 			disk2Gauge, //TODO rename
+			netinfo,
 			hostinfo,
 			cpuinfo,
 			biosinfo,
