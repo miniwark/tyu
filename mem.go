@@ -6,7 +6,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 )
 
-// `meminfo` represent the memory usage statistics
+// meminfo represent the memory usage statistics
 type meminfo struct {
 	ramTotal        string // total available memory in gigabytes
 	ramUsed         string // used memory in gigabytes
@@ -30,7 +30,7 @@ func getMeminfo() meminfo {
 	}
 
 	ret := meminfo{
-		ramTotal:        strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024) to convert to GiB from `gopesutil`
+		ramTotal:        strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024*1024) to convert to GiB from `gopesutil`
 		ramUsed:         strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64),
 		ramUsedPercent:  int(ram.UsedPercent),
 		swapTotal:       strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64),
