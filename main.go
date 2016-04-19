@@ -31,6 +31,7 @@ func main() {
 	swapGauge.X = 0
 	swapGauge.Y = 3
 
+	// display information about the CPU usage
 	cpuGauge := ui.NewGauge()
 	cpuGauge.BorderLabel = "CPU usage "
 	cpuGauge.BarColor = ui.ColorBlue
@@ -40,25 +41,15 @@ func main() {
 	cpuGauge.Y = 6
 
 	// display informations about the physical disks
-	// TODO only two or 3 physical disk add check and a for loop
-	disk := getDiskinfo()
-	disk1Gauge := ui.NewGauge()
-	disk1Gauge.BorderLabel = disk[0].device + " disk usage "
-	disk1Gauge.BarColor = ui.ColorBlue
-	disk1Gauge.Width = 39
-	disk1Gauge.Height = 3
-	disk1Gauge.X = 0
-	disk1Gauge.Y = 9
-	disk1Gauge.Percent = disk[0].usedPercent
-
-	disk2Gauge := ui.NewGauge()
-	disk2Gauge.BorderLabel = disk[1].device + " disk usage " //TODO this fail if only one disk
-	disk2Gauge.BarColor = ui.ColorBlue
-	disk2Gauge.Width = 39
-	disk2Gauge.Height = 3
-	disk2Gauge.X = 0
-	disk2Gauge.Y = 12
-	disk2Gauge.Percent = disk[1].usedPercent
+	diskGauges := make([]*ui.Gauge, 3) // 3 disks max
+	for i := range diskGauges {        //TEMP range = 3
+		diskGauges[i] = ui.NewGauge()
+		diskGauges[i].BarColor = ui.ColorBlue
+		diskGauges[i].Width = 39
+		diskGauges[i].Height = 3
+		diskGauges[i].X = 0
+		diskGauges[i].Y = 9 + (i * 3)
+	}
 
 	// display information about the network activity
 	netinfo := ui.NewList()
@@ -68,9 +59,9 @@ func main() {
 	}
 	netinfo.Items = netitems
 	netinfo.Width = 39
-	netinfo.Height = 3
+	netinfo.Height = 5
 	netinfo.X = 0
-	netinfo.Y = 15
+	netinfo.Y = 18
 
 	// display system informations about the host
 	host := getHostinfo()
@@ -137,13 +128,23 @@ func main() {
 		mem := getMeminfo()
 		ramGauge.Percent = mem.ramUsedPercent
 		ramGauge.Label = "{{percent}}% - " + mem.ramUsed + "/" + mem.ramTotal + " GiB"
+
 		swapGauge.Percent = mem.swapUsedPercent
 		swapGauge.Label = "{{percent}}% - " + mem.swapUsed + "/" + mem.swapTotal + " GiB"
 
+		cpuGauge.Percent = getCPUpercent()
+
+		disk := getDiskinfo()
+		for i := range disk {
+			if i >= 3 { // display 3 disk max
+				break
+			}
+			diskGauges[i].BorderLabel = disk[i].device + " disk usage "
+			diskGauges[i].Percent = disk[i].usedPercent
+		}
+
 		net := getNetinfo() //TODO need to calculte before - after see https://github.com/nicolargo/glances/blob/master/glances/plugins/glances_network.py
 		netitems[0] = "[eth0 ](fg-green)" + "Up " + net.up + " KiB Down " + net.down + " KiB"
-
-		cpuGauge.Percent = getCPUpercent()
 
 		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
 
@@ -151,8 +152,9 @@ func main() {
 			ramGauge,
 			swapGauge,
 			cpuGauge,
-			disk1Gauge, //TODO rename and or stack gauges together
-			disk2Gauge, //TODO rename
+			diskGauges[0],
+			diskGauges[1],
+			diskGauges[2],
 			netinfo,
 			hostinfo,
 			cpuinfo,
