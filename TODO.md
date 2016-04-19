@@ -18,7 +18,10 @@ Implement all this infos and gauges:
 - [x] Vendor
 - [x] Model
 - [x] Frequency
+- [ ] ~~Temperature~~
 - [x] CPU usage gauge
+
+The temperature info is only a display placeholder for now. It will be implemented for Raspbian in v0.4 and later for other platforms.
 
 #### BIOS / Motherboard
 - [x] Motherboard
@@ -41,7 +44,6 @@ Implement all this infos and gauges:
 #### Processes
 - [ ] Nb of processes
 - [ ] Nb of running
-- [ ] 4 first CPU intensive procs
 
 
 Version 0.2
@@ -86,4 +88,5 @@ version 0.8
 
 Future
 ------
+- [ ] change the gauges and values colors to red for high values
 - [ ] maybe a proc list in a tab like `top`...
