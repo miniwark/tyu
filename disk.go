@@ -2,7 +2,6 @@ package main
 
 import (
 	"strconv"
-	"strings"
 
 	"github.com/shirou/gopsutil/disk"
 )
@@ -13,14 +12,13 @@ type diskinfo struct {
 	path        string // ex. '/''
 	total       string
 	used        string
-	free        string
 	usedPercent int
 }
 
 // Return a slice of physical disks usage statistics by using `gopesutil` package
 func getDiskinfo() []diskinfo {
 	// get the partitions list
-	partitions, err := disk.Partitions(false) //TODO understand the true/false
+	partitions, err := disk.Partitions(false) //`false` to get only physical disks
 	if err != nil {
 		panic(err) //TODO do not panic but manage the error
 	}
@@ -33,17 +31,14 @@ func getDiskinfo() []diskinfo {
 		if err != nil {
 			panic(err) //TODO do not panic but manage the error
 		}
-		if strings.HasPrefix(partitions[i].Device, "/dev") { // only look for physical disks //TODO must improve work only on Linux for now
-			d := diskinfo{
-				device:      partitions[i].Device,
-				path:        disk.Path,
-				total:       strconv.FormatUint(disk.Total, 10),
-				used:        strconv.FormatUint(disk.Free, 10),
-				free:        strconv.FormatUint(disk.Used, 10),
-				usedPercent: int(disk.UsedPercent),
-			}
-			ret = append(ret, d)
+		d := diskinfo{
+			device:      partitions[i].Device,
+			path:        disk.Path,
+			total:       strconv.FormatUint(disk.Total, 10),
+			used:        strconv.FormatUint(disk.Free, 10),
+			usedPercent: int(disk.UsedPercent),
 		}
+		ret = append(ret, d)
 	}
 	return ret
 }
