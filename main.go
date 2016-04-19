@@ -57,14 +57,27 @@ func main() {
 	netinfo := ui.NewList()
 	netinfo.BorderLabel = "Network "
 	netitems := []string{
-		"[Up:   ](fg-green)",
-		"[Down: ](fg-green)",
+		"[Up   ](fg-cyan)",
+		"[Down ](fg-cyan)",
 	}
 	netinfo.Items = netitems
-	netinfo.Width = 39
+	netinfo.Width = 19
 	netinfo.Height = 4
 	netinfo.X = 0
 	netinfo.Y = 18
+
+	// display information about the processes
+	procinfo := ui.NewList()
+	procinfo.BorderLabel = "Processes "
+	procitems := []string{
+		"[Tasks   ](fg-cyan)",
+		"[Running ](fg-cyan)",
+	}
+	procinfo.Items = procitems
+	procinfo.Width = 19
+	procinfo.Height = 4
+	procinfo.X = 20
+	procinfo.Y = 18
 
 	// display system informations about the host
 	host := getHostinfo()
@@ -90,13 +103,14 @@ func main() {
 	cpu := getCPUinfo()
 	cpuinfo := ui.NewList()
 	cpuinfo.BorderLabel = "CPU "
-	cpuinfo.Items = []string{
+	cpuitems := []string{
 		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
 		"[Vendor      ](fg-cyan)" + cpu.vendorID,
 		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
 		"[Frequency   ](fg-cyan)" + cpu.cpuMhz + " Mhz",
 		"[Temperature ](fg-cyan)", //TODO
 	}
+	cpuinfo.Items = cpuitems
 	cpuinfo.Width = 39
 	cpuinfo.Height = 7
 	cpuinfo.X = 40
@@ -118,10 +132,10 @@ func main() {
 	biosinfo.Y = 17
 
 	// display a quit help text
-	quit := ui.NewPar("[Type 'q' to exit](fg-white,bg-blue)")
+	quit := ui.NewPar("[ Type 'q' to exit ](fg-white,bg-blue)")
 	quit.Height = 1
-	quit.Width = 39
-	quit.X = 1
+	quit.Width = 20
+	quit.X = 0
 	quit.Y = 23
 	quit.Border = false
 
@@ -157,11 +171,14 @@ func main() {
 		networkNew.down = net.down - networkOld.down
 		networkOld = net
 
-		netitems[0] = "[Up:   ](fg-green)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
-		netitems[1] = "[Down: ](fg-green)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
+		netitems[0] = "[Up   ](fg-cyan)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
+		netitems[1] = "[Down ](fg-cyan)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
 
 		// update the host informations
 		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
+
+		// update the CPUs informations
+		cpuitems[4] = "[Temperature ](fg-cyan)" + "--"
 
 		// register the gauges and blocks to the renderer
 		ui.Render(
@@ -172,6 +189,7 @@ func main() {
 			diskGauges[1],
 			diskGauges[2],
 			netinfo,
+			procinfo,
 			hostinfo,
 			cpuinfo,
 			biosinfo,
