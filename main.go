@@ -3,6 +3,8 @@
 package main
 
 import (
+	"strconv"
+
 	ui "github.com/gizak/termui"
 )
 
@@ -51,15 +53,16 @@ func main() {
 		diskGauges[i].Y = 9 + (i * 3)
 	}
 
-	// display information about the network activity
+	// display information about the global network activity (all interfaces)
 	netinfo := ui.NewList()
 	netinfo.BorderLabel = "Network "
 	netitems := []string{
-		"[eth0 ](fg-green)", //TODO add a for loop, limit to 2 or 3 interfaces
+		"[Up:   ](fg-green)",
+		"[Down: ](fg-green)",
 	}
 	netinfo.Items = netitems
 	netinfo.Width = 39
-	netinfo.Height = 5
+	netinfo.Height = 4
 	netinfo.X = 0
 	netinfo.Y = 18
 
@@ -122,18 +125,22 @@ func main() {
 	quit.Y = 23
 	quit.Border = false
 
+	// variables to calculate network trafic (to avoid cumulative display)
+	var networkOld, networkNew Netinfo
+
 	// render the dashboard with 26x80 fixed size
 	draw := func(t int) {
-		// update memory informations
+		// update memory usage gauges
 		mem := getMeminfo()
 		ramGauge.Percent = mem.ramUsedPercent
 		ramGauge.Label = "{{percent}}% - " + mem.ramUsed + "/" + mem.ramTotal + " GiB"
-
 		swapGauge.Percent = mem.swapUsedPercent
 		swapGauge.Label = "{{percent}}% - " + mem.swapUsed + "/" + mem.swapTotal + " GiB"
 
+		// update CPU usage gauge
 		cpuGauge.Percent = getCPUpercent()
 
+		// update disks usage gauges
 		disk := getDiskinfo()
 		for i := range disk {
 			if i >= 3 { // display 3 disk max
@@ -141,13 +148,22 @@ func main() {
 			}
 			diskGauges[i].BorderLabel = disk[i].device + " disk usage "
 			diskGauges[i].Percent = disk[i].usedPercent
+			diskGauges[i].Label = "{{percent}}% - " + disk[i].used + "/" + disk[i].total + " GiB"
 		}
 
-		net := getNetinfo() //TODO need to calculte before - after see https://github.com/nicolargo/glances/blob/master/glances/plugins/glances_network.py
-		netitems[0] = "[eth0 ](fg-green)" + "Up " + net.up + " KiB Down " + net.down + " KiB"
+		// update network informations
+		net := getNetinfo()
+		networkNew.up = net.up - networkOld.up
+		networkNew.down = net.down - networkOld.down
+		networkOld = net
 
+		netitems[0] = "[Up:   ](fg-green)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
+		netitems[1] = "[Down: ](fg-green)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
+
+		// update the host informations
 		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
 
+		// register the gauges and blocks to the renderer
 		ui.Render(
 			ramGauge,
 			swapGauge,
