@@ -8,7 +8,7 @@ import (
 	"github.com/shirou/gopsutil/host"
 )
 
-// `hostinfo` represent the computer informations
+// hostinfo represent the computer informations
 type hostinfo struct {
 	hostname        string // host name of the system ex 'mycomputer'
 	domainname      string // domain name of the system ex 'mydomain.com'

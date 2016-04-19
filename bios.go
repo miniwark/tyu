@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// `biosinfo` represent the computer motherboard and bios informations
+// biosinfo represent the computer motherboard and bios informations
 type biosinfo struct {
 	boardName   string // name of the motherboard ex. 'C-64'
 	boardVendor string // name of the motherboard  vendor ex. 'Commodore'

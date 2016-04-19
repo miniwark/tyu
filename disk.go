@@ -6,7 +6,7 @@ import (
 	"github.com/shirou/gopsutil/disk"
 )
 
-// `diskinfo` represents the physical disk usage statistics
+// diskinfo represents the physical disk usage statistics
 type diskinfo struct {
 	device      string // ex. '/dev/sda1'
 	path        string // ex. '/''
@@ -34,8 +34,8 @@ func getDiskinfo() []diskinfo {
 		d := diskinfo{
 			device:      partitions[i].Device,
 			path:        disk.Path,
-			total:       strconv.FormatUint(disk.Total, 10),
-			used:        strconv.FormatUint(disk.Free, 10),
+			total:       strconv.FormatFloat(float64(disk.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024*1024) to convert to GiB from `gopesutil`
+			used:        strconv.FormatFloat(float64(disk.Used)/(1024*1024*1024), 'f', 2, 64),
 			usedPercent: int(disk.UsedPercent),
 		}
 		ret = append(ret, d)

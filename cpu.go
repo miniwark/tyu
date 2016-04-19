@@ -7,7 +7,7 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 )
 
-// `cpuinfo` represent the CPU informations
+// cpuinfo represent the CPU informations
 type cpuinfo struct {
 	count     string // number of CPUs
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
