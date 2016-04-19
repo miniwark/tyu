@@ -170,9 +170,13 @@ func main() {
 		networkNew.up = net.up - networkOld.up
 		networkNew.down = net.down - networkOld.down
 		networkOld = net
-
 		netitems[0] = "[Up   ](fg-cyan)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
 		netitems[1] = "[Down ](fg-cyan)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
+
+		// update processes informations
+		procs := getProcinfo()
+		procitems[0] = "[Tasks   ](fg-cyan)" + procs.total
+		procitems[1] = "[Running ](fg-cyan)" + procs.running
 
 		// update the host informations
 		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
