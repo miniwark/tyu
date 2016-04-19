@@ -57,11 +57,12 @@ Version 0.3
 - [ ] Improve documentation
 - [ ] Continuous integration
 - [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
+- [ ] Improved bytes display. Display KiB if < 1 Mib and Mib if < 1 Gib
 
 Version 0.4
 -----------
 - [ ] Add an extended help text in a tab
-- [ ] Maybe launch to this tab if `tyu -h`
+- [ ] Maybe launch the help tab if `tyu -h`
 
 Version 0.5
 -----------
