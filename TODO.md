@@ -18,7 +18,6 @@ Implement all this infos and gauges:
 - [x] Vendor
 - [x] Model
 - [x] Frequency
-- [ ] Temperature (Raspbian only)
 - [x] CPU usage gauge
 
 #### BIOS / Motherboard
@@ -36,8 +35,8 @@ Implement all this infos and gauges:
 - [x] Display up to 3 disks usage gauges
 
 #### Net
-- [ ] Net up
-- [ ] Net down
+- [x] Net up
+- [x] Net down
 
 #### Processes
 - [ ] Nb of processes
@@ -61,6 +60,9 @@ Version 0.3
 
 Version 0.4
 -----------
+#### CPUs
+- [ ] Temperature (Raspbian only)
+
 - [ ] Add an extended help text in a tab
 - [ ] Maybe launch the help tab if `tyu -h`
 
@@ -81,3 +83,7 @@ version 0.8
 
 #### CPUs
 - [ ] Temperature (lm-sebsors)
+
+Future
+------
+- [ ] maybe a proc list in a tab like `top`...
