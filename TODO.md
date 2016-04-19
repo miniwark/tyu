@@ -33,10 +33,7 @@ Implement all this infos and gauges:
 - [x] Swap usage gauge
 
 #### Disks
-- [ ] First disk
-- [ ] Second disk
-
-Note: partially done, need rework
+- [x] Display up to 3 disks usage gauges
 
 #### Net
 - [ ] Net up
