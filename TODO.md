@@ -42,8 +42,8 @@ The temperature info is only a display placeholder for now. It will be implement
 - [x] Net down
 
 #### Processes
-- [ ] Nb of processes
-- [ ] Nb of running
+- [x] Nb of processes
+- [x] Nb of running
 
 
 Version 0.2
@@ -89,4 +89,5 @@ version 0.8
 Future
 ------
 - [ ] change the gauges and values colors to red for high values
+- [ ] use something like psutil.process_iter() instead of process.Pids() in process.go
 - [ ] maybe a proc list in a tab like `top`...
