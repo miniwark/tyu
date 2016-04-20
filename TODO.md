@@ -49,7 +49,7 @@ The temperature info is only a display placeholder for now. It will be implement
 Version 0.2
 -----------
 - [ ] Re-factor variables and function names. API stabilization.
-- [ ] Error handling
+- [ ] Better error handling
 
 
 Version 0.3
@@ -59,6 +59,7 @@ Version 0.3
 - [ ] Continuous integration
 - [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
 - [ ] Improved bytes display. Display KiB if < 1 Mib and Mib if < 1 Gib
+- [ ] Change the display depending of the number of mounted disk
 
 Version 0.4
 -----------
