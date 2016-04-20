@@ -47,4 +47,4 @@ To quit the program type `q`.
 
 Screenshot
 ----------
-TODO
+![tyu_screenshot](https://cloud.githubusercontent.com/assets/301895/14684766/c8ead42a-0731-11e6-9091-d5dcf4a11a8d.png)
