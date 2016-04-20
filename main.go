@@ -1,4 +1,4 @@
-// `tyu` is a small command line utility to display basic system informations
+// tyu is a small command line utility to display basic system informations
 // in the terminal.
 package main
 
@@ -139,7 +139,7 @@ func main() {
 	quit.Y = 23
 	quit.Border = false
 
-	// variables to calculate network trafic (to avoid cumulative display)
+	// variables to calculate network traffic (to avoid cumulative display)
 	var networkOld, networkNew Netinfo
 
 	// render the dashboard with 26x80 fixed size

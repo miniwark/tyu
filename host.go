@@ -55,5 +55,5 @@ func getUptime() (uptime string) {
 	return (time.Duration(t) * time.Second).String()
 }
 
-// getUptime is in a separate func than `getHostinfo` to avoid unecessary calls
+// getUptime is in a separate func than `getHostinfo` to avoid unnecessary calls
 // as all the host informations will normaly not change contrary to uptime

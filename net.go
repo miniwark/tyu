@@ -2,13 +2,13 @@ package main
 
 import "github.com/shirou/gopsutil/net"
 
-// Netinfo represent the network trafic informations
+// Netinfo represent the network traffic informations
 type Netinfo struct {
 	up   float64
 	down float64
 }
 
-// Get informations about the net trafic
+// Get informations about the net traffic
 func getNetinfo() Netinfo {
 	ioconters, err := net.IOCounters(false)
 	if err != nil {
