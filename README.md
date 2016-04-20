@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-MIT_License-blue.svg)](https://github.com/miniwark/tyu/blob/master/LICENSE)
-[![Release](https://img.shields.io/github/release/qubyte/rubidium.svg)]()
+[![Release](https://img.shields.io/badge/Release-v_0.1-blue.svg)](https://github.com/miniwark/tyu/releases)
 [![Build Status](https://drone.io/github.com/miniwark/tyu/status.png)](https://drone.io/github.com/miniwark/tyu/latest)
 [![Go Report Card](https://goreportcard.com/badge/github.com/miniwark/tyu)](https://goreportcard.com/report/github.com/miniwark/tyu)
 
