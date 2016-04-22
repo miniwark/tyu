@@ -18,6 +18,8 @@ import (
 // }
 
 func TestInt8SliceToString(t *testing.T) {
-	char := []int8{49, 50, 51}
-	assert.Equal(t, "123", int8SliceToString(char), "`int8SliceToString([]int8{49, 50, 51})` should be equal to \"123\"")
+	expected := "123"
+	actual := int8SliceToString([]int8{49, 50, 51})
+	assert.IsType(t, expected, actual, "`getNetinfo()` should return a `string`")
+	assert.Equal(t, expected, actual, "`int8SliceToString([]int8{49, 50, 51})` should be equal to --> \"123\"")
 }
