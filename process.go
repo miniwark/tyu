@@ -10,39 +10,29 @@ import (
 type procinfo struct {
 	total   string
 	running string
-	//TODO sleeping and/or threads ?
+	//TODO add zombies threads ?
 }
 
 // Get informations about the processes
 func getProcinfo() procinfo {
-	pids, err := process.Pids() //TODO replace by somethin like psutil.process_iter()
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
-	}
+	ret := procinfo{}
 
-	var run int
-
-	for i := range pids {
-		proc, err := process.NewProcess(pids[i])
-		if err != nil {
-			panic(err) //TODO do not panic but manage the error
+	pids, err := process.Pids() //TODO replace by something like psutil.process_iter()
+	if err == nil {
+		run := 0
+		for i := range pids {
+			proc, err := process.NewProcess(pids[i])
+			if err == nil { //TODO rename `err` variables names to avoid confusion ?
+				status, err := proc.Status()
+				if err == nil {
+					if status == "R" { // "R" for running process
+						run++
+					}
+				}
+			}
 		}
-		status, err := proc.Status()
-		if err != nil {
-			panic(err) //TODO do not panic but manage the error
-		}
-		if status == "R" {
-			run++
-		}
-	}
-	// the status value is not the same than psutils, the status comme directly from /proc/[pid]/stat
-	// with one character from the string "RSDZTW" where R is running, S is sleeping in an
-	// interruptible wait, D is waiting in uninterruptible disk sleep, Z is zombie,
-	// T is traced or stopped (on a signal), and W is paging.
-
-	ret := procinfo{
-		total:   strconv.Itoa(len(pids)),
-		running: strconv.Itoa(run),
+		ret.total = strconv.Itoa(len(pids))
+		ret.running = strconv.Itoa(run)
 	}
 	return ret
 }

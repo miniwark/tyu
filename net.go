@@ -10,18 +10,14 @@ type Netinfo struct {
 
 // Get informations about the net traffic
 func getNetinfo() Netinfo {
-	ioconters, err := net.IOCounters(false)
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
-	}
+	ret := Netinfo{}
 
-	ret := Netinfo{
-		//up: strconv.FormatFloat(float64(ioconters[0].BytesSent)/(1024*1024), 'f', 2, 64),
-		//up: float64(ioconters[0].BytesSent) / (1024 * 1024),
-		up: float64(ioconters[0].BytesSent) / 1024,
-		//down: strconv.FormatFloat(float64(ioconters[0].BytesRecv)/(1024*1024), 'f', 2, 64),
-		//down: float64(ioconters[0].BytesRecv) / (1024 * 1024),
-		down: float64(ioconters[0].BytesRecv) / 1024,
+	ioconters, err := net.IOCounters(false)
+	if err == nil {
+		ret.up = float64(ioconters[0].BytesSent) / 1024
+		ret.down = float64(ioconters[0].BytesRecv) / 1024
+		//ret.up = strconv.FormatFloat(float64(ioconters[0].BytesSent)/1024, 'f', 2, 64),
+		//ret.down = strconv.FormatFloat(float64(ioconters[0].BytesRecv)/1024, 'f', 2, 64),
 	}
 	return ret
 }

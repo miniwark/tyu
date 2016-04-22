@@ -13,33 +13,30 @@ type cpuinfo struct {
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
 	cpuMhz    string // frequency of the CPU in Mhz
-	//TODO temperature and fan speed ? see lm-sensors
+	//TODO temperature: see lm-sensors
 }
 
-// Get informations about the cpu by using `gopesutil` packages
+// Get informations about the cpu by using `gopesutil` package
 func getCPUinfo() cpuinfo {
-	info, err := cpu.Info() // cpu.Info() return a slice of InfoStat structs
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
-	}
+	ret := cpuinfo{}
 
-	ret := cpuinfo{
-		count:     strconv.Itoa(len(info)),
-		vendorID:  info[0].VendorID, //BUG in `gopsutil`
-		modelName: info[0].ModelName,
-		cpuMhz:    strconv.FormatFloat(info[0].Mhz, 'f', 0, 64),
+	info, err := cpu.Info() // cpu.Info() return a slice of InfoStat structs
+	if err == nil {
+		ret.count = strconv.Itoa(len(info))
+		ret.vendorID = info[0].VendorID
+		ret.modelName = info[0].ModelName
+		ret.cpuMhz = strconv.FormatFloat(info[0].Mhz, 'f', 0, 64)
 	}
 	return ret
 }
 
 // get the system-wide CPU utilization percentage
-func getCPUpercent() (usedPercent int) {
+func getCPUpercent() int {
 	percent, err := cpu.Percent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
+	if err == nil {
+		return int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 	}
-
-	return int(percent[0]) // even if cpu.Percent() use `false` it return a slice
+	return 0
 }
 
 // `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
@@ -54,5 +51,5 @@ func getCPUpercent() (usedPercent int) {
 //
 // http://superuser.com/questions/388115/interpreting-output-of-cat-proc-cpuinfo
 // http://unix.stackexchange.com/questions/146051/number-of-processors-in-proc-cpuinfo
-//
-// TODO add temperature
+
+// Get informations about the cpu by using `gopesutil` package

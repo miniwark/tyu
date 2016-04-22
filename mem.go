@@ -19,23 +19,29 @@ type meminfo struct {
 // Get memory usage informations by using `gopesutil` package
 // and then convert them to `string` or `int`
 func getMeminfo() meminfo {
+	ret := meminfo{}
+
 	ram, err := mem.VirtualMemory()
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
+	if err == nil {
+		ret.ramTotal = strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64) // (1024*1024*1024) to convert to GiB from `gopesutil`
+		ret.ramUsed = strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64)
+		ret.ramUsedPercent = int(ram.UsedPercent)
+	} else {
+		ret.ramTotal = ""
+		ret.ramUsed = ""
+		ret.ramUsedPercent = 0
 	}
 
 	swap, err := mem.SwapMemory()
-	if err != nil {
-		panic(err) //TODO do not panic but manage the error
+	if err == nil {
+		ret.swapTotal = strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64)
+		ret.swapUsed = strconv.FormatFloat(float64(swap.Used)/(1024*1024*1024), 'f', 2, 64)
+		ret.swapUsedPercent = int(swap.UsedPercent)
+	} else {
+		ret.swapTotal = ""
+		ret.swapUsed = ""
+		ret.swapUsedPercent = 0
 	}
 
-	ret := meminfo{
-		ramTotal:        strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024*1024) to convert to GiB from `gopesutil`
-		ramUsed:         strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64),
-		ramUsedPercent:  int(ram.UsedPercent),
-		swapTotal:       strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64),
-		swapUsed:        strconv.FormatFloat(float64(swap.Used)/(1024*1024*1024), 'f', 2, 64),
-		swapUsedPercent: int(swap.UsedPercent),
-	}
 	return ret
 }
