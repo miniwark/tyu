@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"io/ioutil"
+	"strings"
+)
 
 // Convert and concatenate a []int8 slice to a string
 // inspired by perterGo: https://groups.google.com/forum/#!topic/golang-nuts/Jel8Bb-YwX8
@@ -13,3 +16,15 @@ func int8SliceToString(char []int8) string {
 }
 
 // TODO maybe change this to convert exclusively [65]int8 array ?
+
+// Read a text file and return the content without the EOF carriage return
+// this utility may be used with files from ``/sys` or ``/proc` file systems
+func readAndTrimFile(path string) string {
+	data, err := ioutil.ReadFile(path)
+	if err == nil {
+		return strings.TrimRight(string(data), "\n") // Trimright remove the EOF carriage return
+	}
+	return ""
+}
+
+//TODO manage multiple line files ?
