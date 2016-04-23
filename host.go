@@ -29,10 +29,6 @@ func getHostinfo() hostinfo {
 		ret.os = strings.Title(info.OS)
 		ret.platform = strings.Title(info.Platform)
 		ret.platformVersion = info.PlatformVersion
-	} else {
-		ret.hostname = ""
-		ret.os = ""
-		ret.platformVersion = ""
 	}
 
 	uts := syscall.Utsname{}  //TODO add an OS check because this is Linux only
@@ -41,10 +37,6 @@ func getHostinfo() hostinfo {
 		ret.domainname = int8SliceToString(uts.Domainname[:])
 		ret.osRelease = int8SliceToString(uts.Release[:])
 		ret.arch = int8SliceToString(uts.Machine[:])
-	} else {
-		ret.domainname = ""
-		ret.osRelease = ""
-		ret.arch = ""
 	}
 
 	return ret
