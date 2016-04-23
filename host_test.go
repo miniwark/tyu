@@ -19,3 +19,9 @@ func TestGetHostinfo(t *testing.T) {
 	actual := getHostinfo()
 	assert.IsType(t, expected, actual, "`getHostinfo()` should return a `hostinfo` type")
 }
+
+func TestGetUptime(t *testing.T) {
+	expected := "abc"
+	actual := getUptime()
+	assert.IsType(t, expected, actual, "`getUptime` should return a string`")
+}
