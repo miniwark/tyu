@@ -44,11 +44,12 @@ func getHostinfo() hostinfo {
 
 // Return the uptime by using `gopesutil` package in a redable string ex '10h10m01s'
 func getUptime() (uptime string) {
+	ret := ""
 	t, err := host.Uptime()
 	if err == nil {
-		return (time.Duration(t) * time.Second).String()
+		ret = (time.Duration(t) * time.Second).String()
 	}
-	return ""
+	return ret
 }
 
 // getUptime is in a separate func than `getHostinfo` to avoid unnecessary calls

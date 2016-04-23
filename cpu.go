@@ -32,11 +32,12 @@ func getCPUinfo() cpuinfo {
 
 // get the system-wide CPU utilization percentage
 func getCPUpercent() int {
+	ret := 0
 	percent, err := cpu.Percent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
 	if err == nil {
-		return int(percent[0]) // even if cpu.Percent() use `false` it return a slice
+		ret = int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 	}
-	return 0
+	return ret
 }
 
 // `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
