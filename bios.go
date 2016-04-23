@@ -19,7 +19,7 @@ type biosinfo struct {
 func getBIOSinfo() biosinfo { //TODO add other systems than Linux
 	ret := biosinfo{}
 
-	boardname, err := ioutil.ReadFile("/sys/devices/virtual/dmi/id/board_name")
+	boardname, err := ioutil.ReadFile("/sys/devices/virtual/dmi/id/board_name") //TODO make an util func for ReadFile + TrimRight
 	if err == nil {
 		ret.boardName = strings.TrimRight(string(boardname), "\n") // Trimright remove the EOF carriage return
 	} else {
