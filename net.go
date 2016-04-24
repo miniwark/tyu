@@ -12,10 +12,10 @@ type Netinfo struct {
 func getNetinfo() Netinfo {
 	ret := Netinfo{}
 
-	ioconters, err := net.IOCounters(false)
+	iocounters, err := net.IOCounters(false)
 	if err == nil {
-		ret.up = float64(ioconters[0].BytesSent) / 1024
-		ret.down = float64(ioconters[0].BytesRecv) / 1024
+		ret.up = float64(iocounters[0].BytesSent) / 1024
+		ret.down = float64(iocounters[0].BytesRecv) / 1024
 		//ret.up = strconv.FormatFloat(float64(ioconters[0].BytesSent)/1024, 'f', 2, 64),
 		//ret.down = strconv.FormatFloat(float64(ioconters[0].BytesRecv)/1024, 'f', 2, 64),
 	}
