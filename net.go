@@ -12,7 +12,7 @@ type Netinfo struct {
 func getNetinfo() Netinfo {
 	ret := Netinfo{}
 
-	iocounters, err := net.IOCounters(false)
+	iocounters, err := netIocounters(false)
 	if err == nil {
 		ret.up = float64(iocounters[0].BytesSent) / 1024
 		ret.down = float64(iocounters[0].BytesRecv) / 1024
@@ -22,5 +22,10 @@ func getNetinfo() Netinfo {
 	return ret
 }
 
-//TODO try to move the (networkNew - networkOld) calculations from main.go here
-// and put back Netinfo as netinfo with strings vars
+//TODO try to move the (networkNew - networkOld) calculations from main.go to here
+// and change `Netinfo` to `netinfo` with strings fields
+
+// wrap net.IOCounters() in an unexported variable for testability
+var netIocounters = func(pernic bool) ([]net.IOCountersStat, error) {
+	return net.IOCounters(pernic)
+}

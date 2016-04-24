@@ -21,14 +21,14 @@ type meminfo struct {
 func getMeminfo() meminfo {
 	ret := meminfo{}
 
-	ram, err := mem.VirtualMemory()
+	ram, err := memVirtualMemory()
 	if err == nil {
 		ret.ramTotal = strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64) // (1024*1024*1024) to convert to GiB from `gopesutil`
 		ret.ramUsed = strconv.FormatFloat(float64(ram.Used)/(1024*1024*1024), 'f', 2, 64)
 		ret.ramUsedPercent = int(ram.UsedPercent)
 	}
 
-	swap, err := mem.SwapMemory()
+	swap, err := memSwapMemory()
 	if err == nil {
 		ret.swapTotal = strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64)
 		ret.swapUsed = strconv.FormatFloat(float64(swap.Used)/(1024*1024*1024), 'f', 2, 64)
@@ -36,4 +36,14 @@ func getMeminfo() meminfo {
 	}
 
 	return ret
+}
+
+// wrap mem.VirtualMemory() in an unexported variable for testability
+var memVirtualMemory = func() (*mem.VirtualMemoryStat, error) {
+	return mem.VirtualMemory()
+}
+
+// wrap mem.SwapMemory() in an unexported variable for testability
+var memSwapMemory = func() (*mem.SwapMemoryStat, error) {
+	return mem.SwapMemory()
 }
