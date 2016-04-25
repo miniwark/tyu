@@ -9,7 +9,7 @@ import (
 
 // TestGetNetinfo test the returned fields values of `getNetinfo()`
 func TestGetNetinfo(t *testing.T) {
-	// setup the faking of net.IOCounters()
+	// setup the faking of `net.IOCounters()`
 	oldNetIocounters := netIocounters
 	netIocounters = func(pernic bool) ([]net.IOCountersStat, error) {
 		ret := []net.IOCountersStat{

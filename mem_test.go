@@ -10,7 +10,7 @@ import (
 
 // TestGetMeminfo test the returned fields values of `getMeminfo()`
 func TestGetMeminfo(t *testing.T) {
-	// setup the faking of memVirtualMemory() & memSwapMemory
+	// setup the faking of `mem.VirtualMemory()` & `mem.SwapMemory()`
 	oldMemVirtualMemory := memVirtualMemory
 	OldMemSwapMemory := memSwapMemory
 	memVirtualMemory = func() (*mem.VirtualMemoryStat, error) {
