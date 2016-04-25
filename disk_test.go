@@ -3,19 +3,42 @@ package main
 import (
 	"testing"
 
+	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetDiskinfoType test if `getDiskinfo()` return `[]diskinfo` slice" and if each fields have the correct types
-// Types regression testing
-func TestGetDiskinfoType(t *testing.T) {
+// TestGetMeminfo test the returned fields values and types of `getDiskinfo()`
+func TestGetDiskinfo(t *testing.T) {
+	// setup the faking of `disk.Partitions()` & `disk.Usage()`
+	oldDiskPartitions := diskPartitions
+	oldDiskUsage := diskUsage
+	diskPartitions = func(all bool) ([]disk.PartitionStat, error) {
+		ret := []disk.PartitionStat{
+			{
+				Device:     "/dev/device",
+				Mountpoint: "/mount/point",
+			},
+		}
+		return ret, nil
+	}
+	diskUsage = func(path string) (*disk.UsageStat, error) {
+		ret := &disk.UsageStat{
+			Path:        "/path",
+			Total:       uint64(1024 * 1024 * 1024), // KiB to GiB conversion is implicitly tested --> ((1024 * 1024 * 1024) / (1024 * 1024 * 1024)) = 1.00
+			Used:        uint64(1024 * 1024 * 1024),
+			UsedPercent: float64(100),
+		}
+		return ret, nil
+	}
+
+	// test
 	expected := []diskinfo{
 		{
-			device:      "", // the result values of the fields are not tested
-			path:        "",
-			total:       "",
-			used:        "",
-			usedPercent: int(0),
+			device:      "/dev/device",
+			path:        "/path",
+			total:       "1.00",
+			used:        "1.00",
+			usedPercent: int(100),
 		},
 	}
 	actual := getDiskinfo()
@@ -25,4 +48,9 @@ func TestGetDiskinfoType(t *testing.T) {
 	assert.IsType(t, expected[0].total, actual[0].total, "`getDiskinfo()` should return a `total` field with a string type")
 	assert.IsType(t, expected[0].used, actual[0].used, "`getDiskinfo()` should return a `used` field with a string type")
 	assert.IsType(t, expected[0].usedPercent, actual[0].usedPercent, "`getDiskinfo()` should return a `usedPercent` field with an int type")
+	assert.Equal(t, expected, actual, "`getDiskinfo` should be equal to []main.diskinfo{main.diskinfo{device:\"/dev/device\", path:\"/path\", total:\"1.00\", used:\"1.00\", usedPercent:100}}")
+
+	// teardown
+	diskPartitions = oldDiskPartitions
+	diskUsage = oldDiskUsage
 }
