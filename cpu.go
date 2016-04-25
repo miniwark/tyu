@@ -20,7 +20,7 @@ type cpuinfo struct {
 func getCPUinfo() cpuinfo {
 	ret := cpuinfo{}
 
-	info, err := cpu.Info() // cpu.Info() return a slice of InfoStat structs
+	info, err := cpuInfo() // cpu.Info() return a slice of InfoStat structs
 	if err == nil {
 		ret.count = strconv.Itoa(len(info))
 		ret.vendorID = info[0].VendorID
@@ -33,7 +33,7 @@ func getCPUinfo() cpuinfo {
 // get the system-wide CPU utilization percentage
 func getCPUpercent() int {
 	ret := 0
-	percent, err := cpu.Percent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
+	percent, err := cpuPercent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
 	if err == nil {
 		ret = int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 	}
@@ -42,6 +42,16 @@ func getCPUpercent() int {
 
 // `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
 // as all the host informations will normaly not change contrary to uptime
+
+// wrap `cpu.Info()` in an unexported variable for testability
+var cpuInfo = func() ([]cpu.InfoStat, error) {
+	return cpu.Info()
+}
+
+// wrap `cpu.Percent()` in an unexported variable for testability
+var cpuPercent = func(interval time.Duration, percpu bool) ([]float64, error) {
+	return cpu.Percent(interval, percpu)
+}
 
 //TODO count cores ?
 //TODO count the physicals id = multiples sockets
