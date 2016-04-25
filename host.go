@@ -58,9 +58,10 @@ func getUptime() (uptime string) {
 // as all the host informations will normaly not change contrary to uptime
 
 // Get informations from syscall Uname()
-func getUname() (syscall.Utsname, error) { //TODO tested with Linux only
+// wrapped in an an unexported variable for testability
+var getUname = func() (syscall.Utsname, error) { //TODO tested with Linux only
 	uts := syscall.Utsname{}
-	err := syscallUname(&uts)
+	err := syscall.Uname(&uts)
 	return uts, err
 }
 
@@ -72,9 +73,4 @@ var hostInfo = func() (*host.InfoStat, error) { //TODO rename
 // wrap `host.Uptime()` in an unexported variable for testability
 var hostUptime = func() (uint64, error) {
 	return host.Uptime()
-}
-
-// wrap `syscall.Uname()` in an unexported variable for testability
-var syscallUname = func(buf *syscall.Utsname) (err error) {
-	return syscall.Uname(buf)
 }
