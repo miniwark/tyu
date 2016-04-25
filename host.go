@@ -23,7 +23,7 @@ type hostinfo struct {
 func getHostinfo() hostinfo {
 	ret := hostinfo{}
 
-	info, err := host.Info()
+	info, err := hostInfo()
 	if err == nil {
 		ret.hostname = info.Hostname
 		ret.os = strings.Title(info.OS)
@@ -45,7 +45,7 @@ func getHostinfo() hostinfo {
 // Return the uptime by using `gopesutil` package in a redable string ex '10h10m01s'
 func getUptime() (uptime string) {
 	ret := ""
-	t, err := host.Uptime()
+	t, err := hostUptime()
 	if err == nil {
 		ret = (time.Duration(t) * time.Second).String()
 	}
@@ -54,3 +54,13 @@ func getUptime() (uptime string) {
 
 // getUptime is in a separate func than `getHostinfo` to avoid unnecessary calls
 // as all the host informations will normaly not change contrary to uptime
+
+// wrap `host.Info()` in an unexported variable for testability
+var hostInfo = func() (*host.InfoStat, error) {
+	return host.Info()
+}
+
+// wrap `host.Uptime()` in an unexported variable for testability
+var hostUptime = func() (uint64, error) {
+	return host.Uptime()
+}
