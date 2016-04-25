@@ -51,12 +51,12 @@ Version 0.2
 - [ ] Add tests
 - [x] Continuous integration
 - [ ] Re-factor variables and function names. API stabilization.
-- [x] Better error checking
+- [ ] Refactor error checking
 
 
 Version 0.3
 -----------
-- [ ] Improve testing
+- [ ] Improve testing: try to get rid of the var func() wrappers
 - [ ] Improve documentation
 - [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
 - [ ] Improved bytes display. Display KiB if < 1 Mib and Mib if < 1 Gib
