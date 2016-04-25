@@ -20,11 +20,11 @@ func getDiskinfo() []diskinfo {
 	var ret []diskinfo
 
 	// get the partitions list
-	partitions, err := disk.Partitions(false) //`false` to get only physical disks
+	partitions, err := diskPartitions(false) //`false` to get only physical disks
 	if err == nil {
 		// get usage stats for each partitions
 		for i := range partitions {
-			disk, err := disk.Usage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
+			disk, err := diskUsage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
 			if err == nil {
 				d := diskinfo{
 					device:      partitions[i].Device,
@@ -38,4 +38,14 @@ func getDiskinfo() []diskinfo {
 		}
 	}
 	return ret
+}
+
+// wrap `disk.Partitions()` in an unexported variable for testability
+var diskPartitions = func(all bool) ([]disk.PartitionStat, error) {
+	return disk.Partitions(all)
+}
+
+// wrap `disk.Usage()` in an unexported variable for testability
+var diskUsage = func(path string) (*disk.UsageStat, error) {
+	return disk.Usage(path)
 }
