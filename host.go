@@ -2,7 +2,7 @@ package main
 
 import (
 	"strings"
-	"syscall"
+	"syscall" //TODO replace by  golang.org/x/sys
 	"time"
 
 	"github.com/shirou/gopsutil/host"
@@ -31,13 +31,15 @@ func getHostinfo() hostinfo {
 		ret.platformVersion = info.PlatformVersion
 	}
 
-	uts := syscall.Utsname{}  //TODO add an OS check because this is Linux only
-	err = syscall.Uname(&uts) //TODO so we may use host.Info() for this
-	if err == nil {
-		ret.domainname = int8SliceToString(uts.Domainname[:])
-		ret.osRelease = int8SliceToString(uts.Release[:])
-		ret.arch = int8SliceToString(uts.Machine[:])
+	if ret.os == "Linux" {
+		uts, err := getUname()
+		if err == nil {
+			ret.domainname = int8SliceToString(uts.Domainname[:])
+			ret.osRelease = int8SliceToString(uts.Release[:])
+			ret.arch = int8SliceToString(uts.Machine[:])
+		}
 	}
+	//TODO add uname like information from other OS
 
 	return ret
 }
@@ -55,6 +57,13 @@ func getUptime() (uptime string) {
 // getUptime is in a separate func than `getHostinfo` to avoid unnecessary calls
 // as all the host informations will normaly not change contrary to uptime
 
+// Get informations from syscall Uname()
+func getUname() (syscall.Utsname, error) { //TODO tested with Linux only
+	uts := syscall.Utsname{}
+	err := syscallUname(&uts)
+	return uts, err
+}
+
 // wrap `host.Info()` in an unexported variable for testability
 var hostInfo = func() (*host.InfoStat, error) { //TODO rename
 	return host.Info()
@@ -63,4 +72,9 @@ var hostInfo = func() (*host.InfoStat, error) { //TODO rename
 // wrap `host.Uptime()` in an unexported variable for testability
 var hostUptime = func() (uint64, error) {
 	return host.Uptime()
+}
+
+// wrap `syscall.Uname()` in an unexported variable for testability
+var syscallUname = func(buf *syscall.Utsname) (err error) {
+	return syscall.Uname(buf)
 }
