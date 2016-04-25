@@ -38,7 +38,7 @@ func TestGetNetinfo(t *testing.T) {
 // Types regression testing
 func TestGetNetinfoType(t *testing.T) {
 	expected := Netinfo{
-		up:   float64(0), // the result values of the `Netinfo` fields are not tested
+		up:   float64(0), // the result values of the fields are not tested
 		down: float64(0),
 	}
 	actual := getNetinfo()

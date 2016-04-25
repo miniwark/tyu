@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TestGetCPUinfo test the returned fields values of `getCPUinfo()`
 func TestGetCPUinfo(t *testing.T) {
 	// setup the faking of `cpu.Info()`
 	oldcpuInfo := cpuInfo //TODO change variable name to avoid confuion with `cpuinfo` struct (or rename the struct)
@@ -47,10 +48,10 @@ func TestGetCPUinfo(t *testing.T) {
 // Types regression testing
 func TestGetCPUinfoType(t *testing.T) {
 	expected := cpuinfo{
-		count:     string(0),
-		vendorID:  string(0),
-		modelName: string(0),
-		cpuMhz:    string(0),
+		count:     "", // the result values of the fields are not tested
+		vendorID:  "",
+		modelName: "",
+		cpuMhz:    "",
 	}
 	actual := getCPUinfo()
 
@@ -61,6 +62,7 @@ func TestGetCPUinfoType(t *testing.T) {
 	assert.IsType(t, expected.cpuMhz, actual.cpuMhz, "`getCPUinfo()` should return a `cpuMhz` field with a string type")
 }
 
+// TestGetCPUpercent test the returned value of `getCPUpercent()`
 func TestGetCPUpercent(t *testing.T) {
 	// setup the faking of `cpu.Percent()`
 	oldcpuPercent := cpuPercent
@@ -79,7 +81,7 @@ func TestGetCPUpercent(t *testing.T) {
 
 // TestGetCPUinfoType test if `getCPUinfo()` return a value with a int type
 func TestGetCPUpercentType(t *testing.T) {
-	expected := int(0)
+	expected := int(0) // the result value is not tested
 	actual := getCPUpercent()
 	assert.IsType(t, expected, actual, "`getCPUpercent()` should return an `int`")
 }
