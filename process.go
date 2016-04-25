@@ -17,11 +17,11 @@ type procinfo struct {
 func getProcinfo() procinfo {
 	ret := procinfo{}
 
-	pids, err := process.Pids() //TODO replace by something like psutil.process_iter()
+	pids, err := processPids() //TODO replace by something like psutil.process_iter() if available in gopsutils
 	if err == nil {
 		run := 0
 		for i := range pids {
-			proc, err := process.NewProcess(pids[i])
+			proc, err := processNewProcess(pids[i])
 			if err == nil { //TODO rename `err` variables names to avoid confusion ?
 				status, err := proc.Status()
 				if err == nil {
@@ -35,4 +35,14 @@ func getProcinfo() procinfo {
 		ret.running = strconv.Itoa(run)
 	}
 	return ret
+}
+
+// wrap `process.Pids()` in an unexported variable for testability
+var processPids = func() ([]int32, error) {
+	return process.Pids()
+}
+
+// wrap `process.NewProcess()` in an unexported variable for testability
+var processNewProcess = func(pid int32) (*process.Process, error) {
+	return process.NewProcess(pid)
 }
