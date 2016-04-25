@@ -33,8 +33,7 @@ func TestGetNetinfo(t *testing.T) {
 	netIocounters = oldNetIocounters
 }
 
-// TestGetNetinfoType test if `getNetinfo()` return a `Netinfo` type and if each fields
-// of `Netinfo` have the correct types
+// TestGetProcinfoType test if `getNetinfo()` return a `procinfo` type and if each fields have the correct types
 // Types regression testing
 func TestGetNetinfoType(t *testing.T) {
 	expected := Netinfo{

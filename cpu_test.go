@@ -43,8 +43,7 @@ func TestGetCPUinfo(t *testing.T) {
 	cpuInfo = oldcpuInfo
 }
 
-// TestGetCPUinfoType test if `getCPUinfo()` return a `cpuinfo` type and if each fields
-// of `cpuinfo` have the correct types
+// TestGetProcinfoType test if `getCPUinfo()` return a `procinfo` type and if each fields have the correct types
 // Types regression testing
 func TestGetCPUinfoType(t *testing.T) {
 	expected := cpuinfo{

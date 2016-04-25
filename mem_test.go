@@ -47,8 +47,7 @@ func TestGetMeminfo(t *testing.T) {
 	memSwapMemory = OldMemSwapMemory
 }
 
-// TestGetMeminfoType test if `getMeminfo()` return a `meminfo` type and if each fields
-// of `meminfo` have the correct types
+// TestGetProcinfoType test if `getMeminfo()` return a `procinfo` type and if each fields have the correct types
 // Types regression testing
 func TestGetMeminfoType(t *testing.T) {
 	expected := meminfo{

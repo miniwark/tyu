@@ -39,8 +39,7 @@ import (
 // 	hostInfo = oldHostInfo
 // }
 
-// TestGetMeminfoType test if `getHostinfo()` return a `hostinfo` type and if each fields
-// of `hostinfo` have the correct types
+// TestGetProcinfoType test if `getHostinfo()` return a `procinfo` type and if each fields have the correct types
 // Types regression testing
 func TestGetHostinfoType(t *testing.T) {
 	expected := hostinfo{
