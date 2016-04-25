@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetMeminfo test the returned fields values and types of `getMeminfo()`
+// TestGetMeminfo test the returned fields values of `getMeminfo()`
 func TestGetMeminfo(t *testing.T) {
 	// setup the faking of `mem.VirtualMemory()` & `mem.SwapMemory()`
 	oldMemVirtualMemory := memVirtualMemory
@@ -40,6 +40,25 @@ func TestGetMeminfo(t *testing.T) {
 		swapUsedPercent: int(100),
 	}
 	actual := getMeminfo()
+	assert.Equal(t, expected, actual, "`getMeminfo` should be equal to --> Netinfo{ramTotal:\"1.00\", ramUsed:\"100\", ramUsedPercent:100, swapTotal:\"1.00\", swapUsed:\"1.00\", swapUsedPercent:100}")
+
+	// teardown
+	memVirtualMemory = oldMemVirtualMemory
+	memSwapMemory = OldMemSwapMemory
+}
+
+// TestGetProcinfoType test if `getMeminfo()` return a `procinfo` type and if each fields have the correct types
+// Types regression testing
+func TestGetMeminfoType(t *testing.T) {
+	expected := meminfo{
+		ramTotal:        "", // the result values of the fields are not tested
+		ramUsed:         "",
+		ramUsedPercent:  int(0),
+		swapTotal:       "",
+		swapUsed:        "",
+		swapUsedPercent: int(0),
+	}
+	actual := getMeminfo()
 	assert.IsType(t, expected, actual, "`getMeminfo()` should return a `meminfo` type")
 	assert.IsType(t, expected.ramTotal, actual.ramTotal, "`getMeminfo()` should return a `ramTotal` field with a string type")
 	assert.IsType(t, expected.ramUsed, actual.ramUsed, "`getMeminfo()` should return a `ramUsed` field with a string type")
@@ -47,11 +66,6 @@ func TestGetMeminfo(t *testing.T) {
 	assert.IsType(t, expected.swapTotal, actual.swapTotal, "`getMeminfo()` should return a `swapTotal` field with a string type")
 	assert.IsType(t, expected.swapUsed, actual.swapUsed, "`getMeminfo()` should return a `swapUsed` field with a string type")
 	assert.IsType(t, expected.swapUsedPercent, actual.swapUsedPercent, "`getMeminfo()` should return a `swapUsedPercent` field with an int type")
-	assert.Equal(t, expected, actual, "`getMeminfo` should be equal to main.Netinfo{ramTotal:\"1.00\", ramUsed:\"100\", ramUsedPercent:100, swapTotal:\"1.00\", swapUsed:\"1.00\", swapUsedPercent:100}")
-
-	// teardown
-	memVirtualMemory = oldMemVirtualMemory
-	memSwapMemory = OldMemSwapMemory
 }
 
 //TODO add tests for errors --> must return empty/zero values

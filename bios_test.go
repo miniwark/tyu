@@ -7,6 +7,7 @@ import (
 )
 
 // TestGetBIOSinfoType test if `getBIOSinfo()` return a `biosinfo` type and if each fields have the correct types
+// Types regression testing
 func TestGetBIOSinfoType(t *testing.T) {
 	expected := biosinfo{
 		boardName:   "", // the result values of the fields are not tested
