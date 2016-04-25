@@ -52,7 +52,7 @@ func TestGetMeminfo(t *testing.T) {
 // Types regression testing
 func TestGetMeminfoType(t *testing.T) {
 	expected := meminfo{
-		ramTotal:        "", // the result values of the `meminfo` fields are not tested
+		ramTotal:        "", // the result values of the fields are not tested
 		ramUsed:         "",
 		ramUsedPercent:  int(0),
 		swapTotal:       "",

@@ -70,6 +70,7 @@ func TestGetCPUpercent(t *testing.T) {
 		ret := []float64{100}
 		return ret, nil
 	}
+
 	// test
 	expected := 100
 	actual := getCPUpercent()
