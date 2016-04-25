@@ -38,12 +38,12 @@ func getMeminfo() meminfo {
 	return ret
 }
 
-// wrap mem.VirtualMemory() in an unexported variable for testability
+// wrap `mem.VirtualMemory()` in an unexported variable for testability
 var memVirtualMemory = func() (*mem.VirtualMemoryStat, error) {
 	return mem.VirtualMemory()
 }
 
-// wrap mem.SwapMemory() in an unexported variable for testability
+// wrap `mem.SwapMemory()` in an unexported variable for testability
 var memSwapMemory = func() (*mem.SwapMemoryStat, error) {
 	return mem.SwapMemory()
 }

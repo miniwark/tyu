@@ -25,7 +25,7 @@ func getNetinfo() Netinfo {
 //TODO try to move the (networkNew - networkOld) calculations from main.go to here
 // and change `Netinfo` to `netinfo` with strings fields
 
-// wrap net.IOCounters() in an unexported variable for testability
+// wrap `net.IOCounters()` in an unexported variable for testability
 var netIocounters = func(pernic bool) ([]net.IOCountersStat, error) {
 	return net.IOCounters(pernic)
 }
