@@ -42,7 +42,7 @@ func TestGetDiskinfo(t *testing.T) {
 		},
 	}
 	actual := getDiskinfo()
-	assert.IsType(t, expected, actual, "`getDiskinfo()` should return a `[]diskinfo` slice")
+
 	assert.IsType(t, expected[0].device, actual[0].device, "`getDiskinfo()` should return a `device` field with a string type")
 	assert.IsType(t, expected[0].path, actual[0].path, "`getDiskinfo()` should return a `path` field with a string type")
 	assert.IsType(t, expected[0].total, actual[0].total, "`getDiskinfo()` should return a `total` field with a string type")
@@ -53,4 +53,12 @@ func TestGetDiskinfo(t *testing.T) {
 	// teardown
 	diskPartitions = oldDiskPartitions
 	diskUsage = oldDiskUsage
+}
+
+// TestGetDiskinfoType test if `getDiskinfo()` return a value with a []diskinfo` slice
+func TestGetDiskinfoType(t *testing.T) {
+	expected := []diskinfo{} // the result value is not tested
+	actual := getDiskinfo()
+
+	assert.IsType(t, expected, actual, "`getDiskinfo()` should return a `[]main.diskinfo` slice")
 }

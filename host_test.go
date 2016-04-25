@@ -92,16 +92,24 @@ func TestGetUptime(t *testing.T) {
 	expected := "24h0m0s"
 	actual := getUptime()
 
-	assert.Equal(t, expected, actual, "`getUptime` should be equal to --> \"24h0m0s\"")
+	assert.Equal(t, expected, actual, "`getUptime` should be equal to \"24h0m0s\"")
 
 	// teardown
 	hostUptime = oldHostUptime
 }
 
-// TestGetUptimeType test if `getUptime` return a value with a string type
+// TestGetUptimeType test if `getUptime()` return a value with a string type
 func TestGetUptimeType(t *testing.T) {
 	expected := "" // the result value is not tested
 	actual := getUptime()
 
-	assert.IsType(t, expected, actual, "`getUptime` should return a string`")
+	assert.IsType(t, expected, actual, "`getUptime` should return a string")
+}
+
+// TestGetUnameType test if `getUname()` return a value with a syscall.Utsname type
+func TestGetUname(t *testing.T) {
+	expected := syscall.Utsname{}
+	actual, _ := getUname() //TODO add test for error case
+
+	assert.IsType(t, expected, actual, "`getUname` should return a syscall.Utsname type")
 }
