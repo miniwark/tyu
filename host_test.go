@@ -39,8 +39,7 @@ import (
 // 	hostInfo = oldHostInfo
 // }
 
-// TestGetProcinfoType test if `getHostinfo()` return a `procinfo` type and if each fields have the correct types
-// Types regression testing
+// TestGetHostinfoType test if `getHostinfo()` return a `procinfo` type and if each fields have the correct types
 func TestGetHostinfoType(t *testing.T) {
 	expected := hostinfo{
 		hostname:        "", // the result values of the fields are not tested
@@ -52,6 +51,7 @@ func TestGetHostinfoType(t *testing.T) {
 		arch:            "",
 	}
 	actual := getHostinfo()
+
 	assert.IsType(t, expected, actual, "`getHostinfo()` should return a `hostinfo` type")
 	assert.IsType(t, expected.hostname, actual.hostname, "`getHostinfo()` should return a `hostname` field with a string type")
 	assert.IsType(t, expected.domainname, actual.domainname, "`getHostinfo()` should return a `domainname` field with a string type")
@@ -74,6 +74,7 @@ func TestGetUptime(t *testing.T) {
 	// test
 	expected := "24h0m0s"
 	actual := getUptime()
+
 	assert.Equal(t, expected, actual, "`getUptime` should be equal to --> \"24h0m0s\"")
 
 	// teardown
@@ -84,5 +85,6 @@ func TestGetUptime(t *testing.T) {
 func TestGetUptimeType(t *testing.T) {
 	expected := "" // the result value is not tested
 	actual := getUptime()
+
 	assert.IsType(t, expected, actual, "`getUptime` should return a string`")
 }

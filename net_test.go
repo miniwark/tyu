@@ -28,13 +28,13 @@ func TestGetNetinfo(t *testing.T) {
 	}
 	actual := getNetinfo()
 
-	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to --> Netinfo{up:1, down:1}")
+	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to main.Netinfo{up:1, down:1}")
+
 	// teardown
 	netIocounters = oldNetIocounters
 }
 
-// TestGetProcinfoType test if `getNetinfo()` return a `procinfo` type and if each fields have the correct types
-// Types regression testing
+// TestGetNetinfoType test if `getNetinfo()` return a `Netinfo` type and if each fields have the correct types
 func TestGetNetinfoType(t *testing.T) {
 	expected := Netinfo{
 		up:   float64(0), // the result values of the fields are not tested

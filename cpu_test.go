@@ -38,13 +38,13 @@ func TestGetCPUinfo(t *testing.T) {
 	}
 	actual := getCPUinfo()
 
-	assert.Equal(t, expected, actual, "`getCPUinfo()` should be equal to --> cpuinfo{count:\"2\", vendorID:\"vendor\", modelName:\"model\", cpuMhz:\"100\"}")
+	assert.Equal(t, expected, actual, "`getCPUinfo()` should be equal to main.cpuinfo{count:\"2\", vendorID:\"vendor\", modelName:\"model\", cpuMhz:\"100\"}")
+
 	// teardown
 	cpuInfo = oldcpuInfo
 }
 
 // TestGetProcinfoType test if `getCPUinfo()` return a `procinfo` type and if each fields have the correct types
-// Types regression testing
 func TestGetCPUinfoType(t *testing.T) {
 	expected := cpuinfo{
 		count:     "", // the result values of the fields are not tested
@@ -73,6 +73,7 @@ func TestGetCPUpercent(t *testing.T) {
 	// test
 	expected := 100
 	actual := getCPUpercent()
+
 	assert.Equal(t, expected, actual, "`getCPUpercent` should be equal to --> 100")
 
 	// teardown
@@ -83,5 +84,6 @@ func TestGetCPUpercent(t *testing.T) {
 func TestGetCPUpercentType(t *testing.T) {
 	expected := int(0) // the result value is not tested
 	actual := getCPUpercent()
+
 	assert.IsType(t, expected, actual, "`getCPUpercent()` should return an `int`")
 }
