@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetMeminfo test the returned fields values and types of `getDiskinfo()`
+// TestGetDiskinfo test the returned fields values and types of `getDiskinfo()`
 func TestGetDiskinfo(t *testing.T) {
 	// setup the faking of `disk.Partitions()` & `disk.Usage()`
 	oldDiskPartitions := diskPartitions
