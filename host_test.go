@@ -62,7 +62,7 @@ func TestGetHostinfoType(t *testing.T) {
 	assert.IsType(t, expected.arch, actual.arch, "`getHostinfo()` should return a `arch` field with a string type")
 }
 
-// TestGetUptime test the returned value of `getUptime()`
+// TestGetUptime test the returned fields values and types of `getUptime()`
 func TestGetUptime(t *testing.T) {
 	// setup the faking of `cpu.Percent()`
 	oldHostUptime := hostUptime
@@ -75,14 +75,8 @@ func TestGetUptime(t *testing.T) {
 	expected := "24h0m0s"
 	actual := getUptime()
 	assert.Equal(t, expected, actual, "`getUptime` should be equal to --> \"24h0m0s\"")
+	assert.IsType(t, expected, actual, "`getUptime` should return a string`")
 
 	// teardown
 	hostUptime = oldHostUptime
-}
-
-// TestGetUptimeType test if `getUptime` return a value with a string type
-func TestGetUptimeType(t *testing.T) {
-	expected := "" // the result value is not tested
-	actual := getUptime()
-	assert.IsType(t, expected, actual, "`getUptime` should return a string`")
 }

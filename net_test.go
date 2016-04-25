@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetNetinfo test the returned fields values of `getNetinfo()`
+// TestGetNetinfo test the returned fields values and types of `getNetinfo()`
 func TestGetNetinfo(t *testing.T) {
 	// setup the faking of `net.IOCounters()`
 	oldNetIocounters := netIocounters
@@ -27,24 +27,13 @@ func TestGetNetinfo(t *testing.T) {
 		down: float64(1),
 	}
 	actual := getNetinfo()
-
-	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to --> Netinfo{up:1, down:1}")
-	// teardown
-	netIocounters = oldNetIocounters
-}
-
-// TestGetProcinfoType test if `getNetinfo()` return a `procinfo` type and if each fields have the correct types
-// Types regression testing
-func TestGetNetinfoType(t *testing.T) {
-	expected := Netinfo{
-		up:   float64(0), // the result values of the fields are not tested
-		down: float64(0),
-	}
-	actual := getNetinfo()
-
 	assert.IsType(t, expected, actual, "`getNetinfo()` should return a `Netinfo` type")
 	assert.IsType(t, expected.up, actual.up, "`getNetinfo()` should return a `up` field with a float64 type")
 	assert.IsType(t, expected.down, actual.down, "`getNetinfo()` should return a `down` field with a float64 type")
+	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to main.Netinfo{up:1, down:1}")
+
+	// teardown
+	netIocounters = oldNetIocounters
 }
 
 //TODO add tests for errors --> must return empty/zero values
