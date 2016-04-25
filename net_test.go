@@ -35,7 +35,7 @@ func TestGetNetinfo(t *testing.T) {
 
 // TestGetNetinfoType test if `getNetinfo()` return a `Netinfo` type and if each fields
 // of `Netinfo` have the correct types
-// Types conversions & regression testing
+// Types regression testing
 func TestGetNetinfoType(t *testing.T) {
 	expected := Netinfo{
 		up:   float64(0), // the result values of the `Netinfo` fields are not tested

@@ -49,7 +49,7 @@ func TestGetMeminfo(t *testing.T) {
 
 // TestGetMeminfoType test if `getMeminfo()` return a `meminfo` type and if each fields
 // of `meminfo` have the correct types
-// Types conversions & regression testing
+// Types regression testing
 func TestGetMeminfoType(t *testing.T) {
 	expected := meminfo{
 		ramTotal:        string(0), // the result values of the `meminfo` fields are not tested
