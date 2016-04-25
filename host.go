@@ -56,7 +56,7 @@ func getUptime() (uptime string) {
 // as all the host informations will normaly not change contrary to uptime
 
 // wrap `host.Info()` in an unexported variable for testability
-var hostInfo = func() (*host.InfoStat, error) {
+var hostInfo = func() (*host.InfoStat, error) { //TODO rename
 	return host.Info()
 }
 
