@@ -20,11 +20,12 @@ func int8SliceToString(char []int8) string {
 // Read a text file and return the content without the EOF carriage return
 // this utility may be used with files from ``/sys` or ``/proc` file systems
 func readAndTrimFile(path string) string {
+	ret := ""
 	data, err := ioutil.ReadFile(path)
 	if err == nil {
-		return strings.TrimRight(string(data), "\n") // Trimright remove the EOF carriage return
+		ret = strings.TrimRight(string(data), "\n") // Trimright remove the EOF carriage return
 	}
-	return ""
+	return ret
 }
 
 //TODO manage multiple line files ?
