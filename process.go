@@ -21,9 +21,9 @@ func getProcinfo() procinfo {
 	if err == nil {
 		run := 0
 		for i := range pids {
-			proc, err := processNewProcess(pids[i])
+			proc, err := process.NewProcess(pids[i])
 			if err == nil { //TODO rename `err` variables names to avoid confusion ?
-				status, err := proc.Status()
+				status, err := procStatus(proc)
 				if err == nil {
 					if status == "R" { // "R" for running process
 						run++
@@ -42,7 +42,7 @@ var processPids = func() ([]int32, error) {
 	return process.Pids()
 }
 
-// wrap `process.NewProcess()` in an unexported variable for testability
-var processNewProcess = func(pid int32) (*process.Process, error) {
-	return process.NewProcess(pid)
+// wrap `process.Status()` in an unexported variable for testability
+var procStatus = func(proc *process.Process) (string, error) {
+	return proc.Status()
 }
