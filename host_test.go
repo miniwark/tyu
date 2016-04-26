@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO finish this test
 // TestGetMeminfo test the returned fields values of `getHostinfo()`
 func TestGetHostinfo(t *testing.T) {
 	// setup the faking of `host.Info()`
@@ -111,5 +110,5 @@ func TestGetUname(t *testing.T) {
 	expected := syscall.Utsname{}
 	actual, _ := getUname() //TODO add test for error case
 
-	assert.IsType(t, expected, actual, "`getUname` should return a syscall.Utsname type")
+	assert.IsType(t, expected, actual, "`getUname()` should return a syscall.Utsname type")
 }
