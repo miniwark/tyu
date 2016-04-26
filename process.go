@@ -42,7 +42,7 @@ var processPids = func() ([]int32, error) {
 	return process.Pids()
 }
 
-// wrap `process.Status()` in an unexported variable for testability
+// wrap `Process.Status()` in an unexported variable for testability
 var procStatus = func(proc *process.Process) (string, error) {
 	return proc.Status()
 }
