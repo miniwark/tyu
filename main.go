@@ -3,12 +3,39 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"strconv"
 
 	ui "github.com/gizak/termui"
+	flag "github.com/ogier/pflag"
 )
 
+// command line argument
+var versionFlag bool
+
+// command line arguments setup
+func init() {
+	flag.BoolVarP(&versionFlag, "version", "V", false, "show program's version number and exit")
+	// command line help text
+	help := "Usage:\n  tyu [-h] [-V]\n\n" +
+		"Options:\n" +
+		"  -h, --help            show this help message and exit\n" +
+		"  -V, --version         show program's version number and exit\n\n"
+	flag.Usage = func() { // overide the ugly default usage message
+		fmt.Fprintf(os.Stderr, help)
+	}
+}
+
 func main() {
+	// command line arguments
+	flag.Parse()
+	// show program's version number and exit
+	if versionFlag == true {
+		fmt.Println("Tyu version " + tyuVersion)
+		os.Exit(0)
+	}
+
 	// init termui
 	if err := ui.Init(); err != nil {
 		panic(err) //TODO do not panic but manage the error
