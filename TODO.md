@@ -50,7 +50,7 @@ Version 0.2
 -----------
 - [ ] Add tests
 - [x] Continuous integration
-- [ ] Re-factor variables and function names. API stabilization.
+- [ ] Refactor variables and function names
 - [ ] Refactor error checking
 
 
