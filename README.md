@@ -48,6 +48,7 @@ Firstly install [gopsutils](https://github.com/shirou/gopsutil) and [termui](htt
 
     go get github.com/shirou/gopsutil
     go get github.com/gizak/termui
+    go get github.com/ogier/pflag
 
 then download and build `tyu`:
 
