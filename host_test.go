@@ -112,3 +112,19 @@ func TestGetUname(t *testing.T) {
 
 	assert.IsType(t, expected, actual, "`getUname()` should return a syscall.Utsname type")
 }
+
+// TestHostInfo test if `hostInfo()` return a value with a *host.InfoStat type
+func TestHostInfo(t *testing.T) {
+	expected := &host.InfoStat{}
+	actual, _ := hostInfo()
+
+	assert.IsType(t, expected, actual, "`hostInfo()` should return a *host.InfoStat type")
+}
+
+// TestHhostUptime test if `hostUptime()` return a value with a uint64 type
+func TestHostUptime(t *testing.T) {
+	expected := uint64(0) // the result value is not tested
+	actual, _ := hostUptime()
+
+	assert.IsType(t, expected, actual, "`hostUptime()` should return a uint64 type")
+}

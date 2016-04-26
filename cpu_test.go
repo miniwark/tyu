@@ -87,3 +87,19 @@ func TestGetCPUpercentType(t *testing.T) {
 
 	assert.IsType(t, expected, actual, "`getCPUpercent()` should return an `int`")
 }
+
+// TestCpuInfo test if `cpu.Info()` return a value with a []cpu.InfoStat slice
+func TestCpuInfo(t *testing.T) {
+	expected := []cpu.InfoStat{}
+	actual, _ := cpu.Info()
+
+	assert.IsType(t, expected, actual, "`cpuInfo()` should return a []cpu.InfoStat slice")
+}
+
+// TestCpuPercent test if `cpu.Percent()` return a value with a []float64 slice
+func TestCpuPercent(t *testing.T) {
+	expected := []float64{}
+	actual, _ := cpuPercent((500 * time.Millisecond), false)
+
+	assert.IsType(t, expected, actual, "`cpuPercent()` should return a []float64 slice")
+}

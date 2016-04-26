@@ -62,3 +62,19 @@ func TestGetDiskinfoType(t *testing.T) {
 
 	assert.IsType(t, expected, actual, "`getDiskinfo()` should return a `[]main.diskinfo` slice")
 }
+
+// TestDiskPartitions test if `diskPartitions()` return a value with a []disk.PartitionStat slice
+func TestDiskPartitions(t *testing.T) {
+	expected := []disk.PartitionStat{}
+	actual, _ := diskPartitions(false)
+
+	assert.IsType(t, expected, actual, "`diskPartitions()` should return a []disk.PartitionStat slice")
+}
+
+// TestDiskUsage test if `diskUsage()` return a value with a *disk.UsageStat type
+func TestDiskUsage(t *testing.T) {
+	expected := &disk.UsageStat{}
+	actual, _ := diskUsage("")
+
+	assert.IsType(t, expected, actual, "`diskUsage()` should return a *disk.UsageStat type")
+}

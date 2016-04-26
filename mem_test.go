@@ -69,4 +69,20 @@ func TestGetMeminfoType(t *testing.T) {
 	assert.IsType(t, expected.swapUsedPercent, actual.swapUsedPercent, "`getMeminfo()` should return a `swapUsedPercent` field with an int type")
 }
 
+// TestMemVirtualMemory test if `memVirtualMemory()` return a value with a *mem.VirtualMemoryStat type
+func TestMemVirtualMemory(t *testing.T) {
+	expected := &mem.VirtualMemoryStat{}
+	actual, _ := memVirtualMemory()
+
+	assert.IsType(t, expected, actual, "`memVirtualMemory()` should return a *mem.VirtualMemoryStat")
+}
+
+// TestMemSwapMemory test if `memSwapMemory()` return a value with a *mem.SwapMemoryStat type
+func TestMemSwapMemory(t *testing.T) {
+	expected := &mem.SwapMemoryStat{}
+	actual, _ := memSwapMemory()
+
+	assert.IsType(t, expected, actual, "`memSwapMemory()` should return a *mem.SwapMemoryStat type")
+}
+
 //TODO add tests for errors --> must return empty/zero values

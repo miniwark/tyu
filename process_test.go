@@ -46,3 +46,19 @@ func TestGetProcinfoType(t *testing.T) {
 	assert.IsType(t, expected.total, actual.total, "`getMeminfo()` should return a `total` field with a string type")
 	assert.IsType(t, expected.running, actual.running, "`getMeminfo()` should return a `ramUsed` field with a string type")
 }
+
+// TestProcessPids test if `processPids()` return a []int32 slice
+func TestProcessPids(t *testing.T) {
+	expected := []int32{}
+	actual, _ := processPids()
+
+	assert.IsType(t, expected, actual, "`processPids()` should return a []int32 slice")
+}
+
+// TestProcStatus test if `procStatus()` return a value with a string type
+func TestProcStatus(t *testing.T) {
+	expected := "" // the result value is not tested
+	actual, _ := procStatus(&process.Process{})
+
+	assert.IsType(t, expected, actual, "`procStatus()` should return a string type")
+}

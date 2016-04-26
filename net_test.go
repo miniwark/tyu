@@ -47,4 +47,12 @@ func TestGetNetinfoType(t *testing.T) {
 	assert.IsType(t, expected.down, actual.down, "`getNetinfo()` should return a `down` field with a float64 type")
 }
 
+// TestNetIocounters test if `netIocounters()` return a value with a []net.IOCountersStat slice
+func TestNetIocounters(t *testing.T) {
+	expected := []net.IOCountersStat{}
+	actual, _ := netIocounters(false)
+
+	assert.IsType(t, expected, actual, "`netIocounters()` should return a []net.IOCountersStat slice")
+}
+
 //TODO add tests for errors --> must return empty/zero values
