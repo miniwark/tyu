@@ -52,6 +52,7 @@ Version 0.2
 - [x] Continuous integration
 - [ ] Refactor variables and function names
 - [ ] Refactor error checking
+- [x] Add command line options
 
 
 Version 0.3
