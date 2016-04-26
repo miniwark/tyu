@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	//init termui
+	// init termui
 	if err := ui.Init(); err != nil {
 		panic(err) //TODO do not panic but manage the error
 	}
