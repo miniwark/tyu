@@ -14,7 +14,7 @@ func TestGetProcinfo(t *testing.T) {
 	oldProcessPids := processPids
 	oldProcStatus := procStatus
 	processPids = func() ([]int32, error) {
-		ret := []int32{1, 2, 3} // 3 fakes pids
+		ret := []int32{1} // one fake Pid with number 1
 		return ret, nil
 	}
 	procStatus = func(proc *process.Process) (string, error) {
@@ -23,11 +23,11 @@ func TestGetProcinfo(t *testing.T) {
 
 	// test
 	expected := procinfo{
-		total:   strconv.FormatInt(3, 10),
-		running: strconv.FormatInt(3, 10),
+		total:   strconv.FormatInt(1, 10),
+		running: strconv.FormatInt(1, 10),
 	}
 	actual := getProcinfo()
-	assert.Equal(t, expected, actual, "`getProcinfo` should be equal to main.procinfo{total:\"3\", running:\"3\"}")
+	assert.Equal(t, expected, actual, "`getProcinfo` should be equal to main.procinfo{total:\"1\", running:\"1\"}")
 
 	// teardown
 	processPids = oldProcessPids
