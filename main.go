@@ -31,7 +31,7 @@ func main() {
 	// command line arguments
 	flag.Parse()
 	// show program's version number and exit
-	if versionFlag == true {
+	if versionFlag {
 		fmt.Println("Tyu version " + tyuVersion)
 		os.Exit(0)
 	}
@@ -42,32 +42,9 @@ func main() {
 	}
 	defer ui.Close()
 
-	// display physical RAM usage informations
-	ramGauge := ui.NewGauge() //TODO try to draw the border around gauge, used, free and total
-	ramGauge.BorderLabel = "RAM usage "
-	ramGauge.BarColor = ui.ColorBlue
-	ramGauge.Width = 39
-	ramGauge.Height = 3
-	ramGauge.X = 0
-	ramGauge.Y = 0
-
-	// display physical swap usage informations
-	swapGauge := ui.NewGauge()
-	swapGauge.BorderLabel = "Swap usage "
-	swapGauge.BarColor = ui.ColorBlue
-	swapGauge.Width = 39
-	swapGauge.Height = 3
-	swapGauge.X = 0
-	swapGauge.Y = 3
-
-	// display information about the CPU usage
-	cpuGauge := ui.NewGauge()
-	cpuGauge.BorderLabel = "CPU usage "
-	cpuGauge.BarColor = ui.ColorBlue
-	cpuGauge.Width = 39
-	cpuGauge.Height = 3
-	cpuGauge.X = 0
-	cpuGauge.Y = 6
+	ramGauge := createRAMGauge()
+	swapGauge := createSwapGauge()
+	cpuGauge := createCPUGauge()
 
 	// display informations about the physical disks
 	diskGauges := make([]*ui.Gauge, 3) // 3 disks max
@@ -80,91 +57,13 @@ func main() {
 		diskGauges[i].Y = 9 + (i * 3)
 	}
 
-	// display information about the global network activity (all interfaces)
-	netinfo := ui.NewList()
-	netinfo.BorderLabel = "Network "
-	netitems := []string{
-		"[Up   ](fg-cyan)",
-		"[Down ](fg-cyan)",
-	}
-	netinfo.Items = netitems
-	netinfo.Width = 19
-	netinfo.Height = 4
-	netinfo.X = 0
-	netinfo.Y = 18
+	netinfo := createNetList()
+	procinfo := createProcList()
+	hostinfo := createHostList()
+	cpuinfo := createCPUList()
+	biosinfo := createBIOSList()
 
-	// display information about the processes
-	procinfo := ui.NewList()
-	procinfo.BorderLabel = "Processes "
-	procitems := []string{
-		"[Tasks   ](fg-cyan)",
-		"[Running ](fg-cyan)",
-	}
-	procinfo.Items = procitems
-	procinfo.Width = 19
-	procinfo.Height = 4
-	procinfo.X = 20
-	procinfo.Y = 18
-
-	// display system informations about the host
-	host := getHostinfo()
-	hostinfo := ui.NewList()
-	hostinfo.BorderLabel = "Host "
-	hostitems := []string{
-		"[Hostname         ](fg-cyan)" + host.hostname,
-		"[Domain           ](fg-cyan)" + host.domainname,
-		"[OS               ](fg-cyan)" + host.os,
-		"[OS version       ](fg-cyan)" + host.osRelease,
-		"[Platform         ](fg-cyan)" + host.platform,
-		"[Platform version ](fg-cyan)" + host.platformVersion,
-		"[Architecture     ](fg-cyan)" + host.arch,
-		"[Uptime           ](fg-cyan)",
-	}
-	hostinfo.Items = hostitems
-	hostinfo.Width = 39
-	hostinfo.Height = 10
-	hostinfo.X = 40
-	hostinfo.Y = 0
-
-	// display informations about the CPUs
-	cpu := getCPUinfo()
-	cpuinfo := ui.NewList()
-	cpuinfo.BorderLabel = "CPU "
-	cpuitems := []string{
-		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
-		"[Vendor      ](fg-cyan)" + cpu.vendorID,
-		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
-		"[Frequency   ](fg-cyan)" + cpu.cpuMhz + " Mhz",
-		"[Temperature ](fg-cyan)", //TODO
-	}
-	cpuinfo.Items = cpuitems
-	cpuinfo.Width = 39
-	cpuinfo.Height = 7
-	cpuinfo.X = 40
-	cpuinfo.Y = 10
-
-	// display bios and motherboard informations
-	bios := getBIOSinfo()
-	biosinfo := ui.NewList()
-	biosinfo.BorderLabel = "BIOS "
-	biosinfo.Items = []string{
-		"[Motherboard ](fg-cyan)" + bios.boardName,
-		"[Vendor      ](fg-cyan)" + bios.boardVendor,
-		"[BIOS        ](fg-cyan)" + bios.biosVendor,
-		"[Version     ](fg-cyan)" + bios.biosVersion + "  " + bios.biosDate,
-	}
-	biosinfo.Width = 39
-	biosinfo.Height = 6
-	biosinfo.X = 40
-	biosinfo.Y = 17
-
-	// display a quit help text
-	quit := ui.NewPar("[ Type 'q' to exit ](fg-white,bg-blue)")
-	quit.Height = 1
-	quit.Width = 20
-	quit.X = 0
-	quit.Y = 23
-	quit.Border = false
+	quit := createQuitPar()
 
 	// variables to calculate network traffic (to avoid cumulative display)
 	var networkOld, networkNew Netinfo
@@ -197,19 +96,20 @@ func main() {
 		networkNew.up = net.up - networkOld.up
 		networkNew.down = net.down - networkOld.down
 		networkOld = net
-		netitems[0] = "[Up   ](fg-cyan)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
-		netitems[1] = "[Down ](fg-cyan)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
+		netinfo.Items[0] = "[Up   ](fg-cyan)" + strconv.FormatFloat(networkNew.up, 'f', 1, 64) + " KiB"
+		netinfo.Items[1] = "[Down ](fg-cyan)" + strconv.FormatFloat(networkNew.down, 'f', 1, 64) + " KiB"
 
 		// update processes informations
 		procs := getProcinfo()
-		procitems[0] = "[Tasks   ](fg-cyan)" + procs.total
-		procitems[1] = "[Running ](fg-cyan)" + procs.running
+		procinfo.Items[0] = "[Tasks   ](fg-cyan)" + procs.total
+		procinfo.Items[1] = "[Running ](fg-cyan)" + procs.running
 
 		// update the host informations
-		hostitems[7] = "[Uptime           ](fg-cyan)" + getUptime()
+		uptime := getUptime()
+		hostinfo.Items[7] = "[Uptime           ](fg-cyan)" + uptime
 
 		// update the CPUs informations
-		cpuitems[4] = "[Temperature ](fg-cyan)" + "--"
+		cpuinfo.Items[4] = "[Temperature ](fg-cyan)" + "--"
 
 		// register the gauges and blocks to the renderer
 		ui.Render(
