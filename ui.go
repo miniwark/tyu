@@ -95,7 +95,7 @@ func createNetList() *ui.List { //TODO move over ramGauge
 	return l
 }
 
-// NetworkOld keep track of network trafic up & down
+// NetworkOld keep track of network traffic up & down
 var NetworkOld Netinfo //TODO get rid of this globals
 
 //  updateNetList update network informations
@@ -210,7 +210,7 @@ func createDiskGauge() []*ui.Gauge {
 }
 
 // updateRAMGauge update the percentages of the disk gauges
-func updateDiskGauge(g []*ui.Gauge) { //BUG mounting an additional disk wile runing tyu make it crask
+func updateDiskGauge(g []*ui.Gauge) { //BUG tyu crash when mounting an external disk
 	disk := getDiskinfo()
 
 	for i := range disk {
