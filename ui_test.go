@@ -7,46 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestCreateRAMGauge test if `createRAMGauge()` return a value with a *termui.Gauge type
-func TestCreateRAMGaugeType(t *testing.T) {
-	expected := &ui.Gauge{}
-	actual := createRAMGauge()
-
-	assert.IsType(t, expected, actual, "`createRAMGauge()` should return a *termui.Gauge")
-}
-
-// TestCreateSwapGaugeType test if `createSwapGauge()` return a value with a *termui.Gauge type
-func TestCreateSwapGaugeType(t *testing.T) {
-	expected := &ui.Gauge{}
-	actual := createSwapGauge()
-
-	assert.IsType(t, expected, actual, "`createSwapGauge()` should return a *termui.Gauge")
-}
-
-// TestCreateSwapGaugeType test if `createCPUGauge()` return a value with a *termui.Gauge type
-func TestCreateCPUGaugeType(t *testing.T) {
-	expected := &ui.Gauge{}
-	actual := createCPUGauge()
-
-	assert.IsType(t, expected, actual, "`createCPUGauge()` should return a *termui.Gauge")
-}
-
-// TestCreateNetListType test if `createNetList()` return a value with a *termui.List type
-func TestCreateNetListType(t *testing.T) {
-	expected := &ui.List{}
-	actual := createNetList()
-
-	assert.IsType(t, expected, actual, "`createNetList()` should return a *termui.List")
-}
-
-// TestCreateProcListType test if `createProcList()` return a value with a *termui.List type
-func TestCreateProcListType(t *testing.T) {
-	expected := &ui.List{}
-	actual := createProcList()
-
-	assert.IsType(t, expected, actual, "`createProcList()` should return a *termui.List")
-}
-
 // TestCreateHostListType test if `createHostList()` return a value with a *termui.List type
 func TestCreateHostListType(t *testing.T) {
 	expected := &ui.List{}
@@ -69,6 +29,46 @@ func TestCreateBIOSListType(t *testing.T) {
 	actual := createBIOSList()
 
 	assert.IsType(t, expected, actual, "`createBIOSList()` should return a *termui.List")
+}
+
+// TestCreateNetListType test if `createNetList()` return a value with a *termui.List type
+func TestCreateNetListType(t *testing.T) {
+	expected := &ui.List{}
+	actual := createNetList()
+
+	assert.IsType(t, expected, actual, "`createNetList()` should return a *termui.List")
+}
+
+// TestCreateProcListType test if `createProcList()` return a value with a *termui.List type
+func TestCreateProcListType(t *testing.T) {
+	expected := &ui.List{}
+	actual := createProcList()
+
+	assert.IsType(t, expected, actual, "`createProcList()` should return a *termui.List")
+}
+
+// TestCreateRAMGauge test if `createRAMGauge()` return a value with a *termui.Gauge type
+func TestCreateRAMGaugeType(t *testing.T) {
+	expected := &ui.Gauge{}
+	actual := createRAMGauge()
+
+	assert.IsType(t, expected, actual, "`createRAMGauge()` should return a *termui.Gauge")
+}
+
+// TestCreateSwapGaugeType test if `createSwapGauge()` return a value with a *termui.Gauge type
+func TestCreateSwapGaugeType(t *testing.T) {
+	expected := &ui.Gauge{}
+	actual := createSwapGauge()
+
+	assert.IsType(t, expected, actual, "`createSwapGauge()` should return a *termui.Gauge")
+}
+
+// TestCreateSwapGaugeType test if `createCPUGauge()` return a value with a *termui.Gauge type
+func TestCreateCPUGaugeType(t *testing.T) {
+	expected := &ui.Gauge{}
+	actual := createCPUGauge()
+
+	assert.IsType(t, expected, actual, "`createCPUGauge()` should return a *termui.Gauge")
 }
 
 // TestCreateBIOSListType test if `createQuitPar()` return a value with a *termui.Par type
