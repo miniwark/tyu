@@ -71,6 +71,14 @@ func TestCreateCPUGaugeType(t *testing.T) {
 	assert.IsType(t, expected, actual, "`createCPUGauge()` should return a *termui.Gauge")
 }
 
+// TestCreateDiskGaugeType test if `createDiskGauge()` return a value with a []*termui.Gauge array
+func TestCreateDiskGaugeType(t *testing.T) {
+	expected := []*ui.Gauge{}
+	actual := createDiskGauge()
+
+	assert.IsType(t, expected, actual, "`createDiskGauge()` should return a []*termui.Gauge")
+}
+
 // TestCreateBIOSListType test if `createQuitPar()` return a value with a *termui.Par type
 func TestCreateQuitParType(t *testing.T) {
 	expected := &ui.Par{}
