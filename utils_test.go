@@ -19,8 +19,9 @@ func TestInt8SliceToString(t *testing.T) {
 // TestReadAndTrimFile test the returned type and value of `readAndTrimFile()`
 func TestReadAndTrimFile(t *testing.T) {
 	expected := "package main"
-	actual := readAndTrimFile("utils_test.go")
+	actual, err := readAndTrimFile("utils_test.go")
 
+	assert.NoError(t, err, "`readAndTrimFile()` should not have returned an error")
 	assert.IsType(t, expected, actual, "`readAndTrimFile()` should return a `string`")
 	assert.Regexp(t, regexp.MustCompile(expected), actual, "`readAndTrimFile(\"utils_test.go\")` should contain \"package main\"")
 	//TODO improve tests with Equal instead of Regexp by using a temp file ?

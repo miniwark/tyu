@@ -39,19 +39,20 @@ func getHostinfo() hostinfo {
 			ret.arch = int8SliceToString(uts.Machine[:])
 		}
 	}
-	//TODO add uname like information from other OS
 
 	return ret
+
+	//TODO add uname like information from other OS
 }
 
 // Return the uptime by using `gopesutil` package in a redable string ex '10h10m01s'
-func getUptime() (uptime string) {
-	ret := ""
+func getUptime() (ret string, err error) {
+	ret = ""
 	t, err := hostUptime()
 	if err == nil {
 		ret = (time.Duration(t) * time.Second).String()
 	}
-	return ret
+	return ret, err
 }
 
 // getUptime is in a separate func than `getHostinfo` to avoid unnecessary calls

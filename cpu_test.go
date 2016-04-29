@@ -36,8 +36,9 @@ func TestGetCPUinfo(t *testing.T) {
 		modelName: "model",
 		cpuMhz:    strconv.FormatInt(100, 10),
 	}
-	actual := getCPUinfo()
+	actual, err := getCPUinfo()
 
+	assert.NoError(t, err, "`getCPUinfo()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getCPUinfo()` should be equal to main.cpuinfo{count:\"2\", vendorID:\"vendor\", modelName:\"model\", cpuMhz:\"100\"}")
 
 	// teardown
@@ -52,7 +53,7 @@ func TestGetCPUinfoType(t *testing.T) {
 		modelName: "",
 		cpuMhz:    "",
 	}
-	actual := getCPUinfo()
+	actual, _ := getCPUinfo()
 
 	assert.IsType(t, expected, actual, "`getCPUinfo()` should return a `cpuinfo` type")
 	assert.IsType(t, expected.count, actual.count, "`getCPUinfo()` should return a `count` field with a string type")
@@ -72,8 +73,9 @@ func TestGetCPUpercent(t *testing.T) {
 
 	// test
 	expected := 100
-	actual := getCPUpercent()
+	actual, err := getCPUpercent()
 
+	assert.NoError(t, err, "`getCPUpercent()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getCPUpercent` should be equal to --> 100")
 
 	// teardown
@@ -83,7 +85,7 @@ func TestGetCPUpercent(t *testing.T) {
 // TestGetCPUinfoType test if `getCPUinfo()` return a value with a int type
 func TestGetCPUpercentType(t *testing.T) {
 	expected := int(0) // the result value is not tested
-	actual := getCPUpercent()
+	actual, _ := getCPUpercent()
 
 	assert.IsType(t, expected, actual, "`getCPUpercent()` should return an `int`")
 }

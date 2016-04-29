@@ -9,9 +9,7 @@ type Netinfo struct {
 }
 
 // Get informations about the net traffic
-func getNetinfo() Netinfo {
-	ret := Netinfo{}
-
+func getNetinfo() (ret Netinfo, err error) {
 	iocounters, err := netIocounters(false)
 	if err == nil {
 		ret.up = float64(iocounters[0].BytesSent) / 1024
@@ -19,7 +17,7 @@ func getNetinfo() Netinfo {
 		//ret.up = strconv.FormatFloat(float64(ioconters[0].BytesSent)/1024, 'f', 2, 64),
 		//ret.down = strconv.FormatFloat(float64(ioconters[0].BytesRecv)/1024, 'f', 2, 64),
 	}
-	return ret
+	return ret, err
 }
 
 //TODO try to move the (networkNew - networkOld) calculations from main.go to here

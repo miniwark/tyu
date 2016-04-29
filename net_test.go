@@ -26,8 +26,9 @@ func TestGetNetinfo(t *testing.T) {
 		up:   float64(1),
 		down: float64(1),
 	}
-	actual := getNetinfo()
+	actual, err := getNetinfo()
 
+	assert.NoError(t, err, "`getNetinfo()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to main.Netinfo{up:1, down:1}")
 
 	// teardown
@@ -40,7 +41,7 @@ func TestGetNetinfoType(t *testing.T) {
 		up:   float64(0), // the result values of the fields are not tested
 		down: float64(0),
 	}
-	actual := getNetinfo()
+	actual, _ := getNetinfo()
 
 	assert.IsType(t, expected, actual, "`getNetinfo()` should return a `Netinfo` type")
 	assert.IsType(t, expected.up, actual.up, "`getNetinfo()` should return a `up` field with a float64 type")

@@ -13,19 +13,17 @@ func int8SliceToString(char []int8) string {
 		s[i] = string(char[i])
 	}
 	return strings.Join(s, "")
+	// TODO maybe change this to convert exclusively to [65]int8 array ?
 }
-
-// TODO maybe change this to convert exclusively to [65]int8 array ?
 
 // Read a text file and return the content without the EOF carriage return
 // this utility may be used with files from `/sys` or `/proc` file systems
-func readAndTrimFile(path string) string {
-	ret := ""
+func readAndTrimFile(path string) (ret string, err error) {
+	ret = ""
 	data, err := ioutil.ReadFile(path)
 	if err == nil {
 		ret = strings.TrimRight(string(data), "\n") // Trimright remove the EOF carriage return
 	}
-	return ret
+	return ret, err
+	//TODO manage multiple line files ?
 }
-
-//TODO manage multiple line files ?

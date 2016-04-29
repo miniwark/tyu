@@ -31,13 +31,13 @@ func createHostList() *ui.List {
 
 // 	updateHostList/ update the host informations
 func updateHostList(g *ui.List) {
-	uptime := getUptime()
+	uptime, _ := getUptime()
 	g.Items[7] = "[Uptime           ](fg-cyan)" + uptime
 }
 
 // createCPUList display informations about the CPUs
 func createCPUList() *ui.List {
-	cpu := getCPUinfo()
+	cpu, _ := getCPUinfo()
 
 	l := ui.NewList()
 	l.BorderLabel = "CPU "
@@ -100,7 +100,7 @@ var NetworkOld Netinfo //TODO get rid of this globals
 
 //  updateNetList update network informations
 func updateNetList(g *ui.List) {
-	net := getNetinfo()
+	net, _ := getNetinfo()
 	up := net.up - NetworkOld.up
 	down := net.down - NetworkOld.down
 	NetworkOld = net
@@ -185,7 +185,7 @@ func createCPUGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage of the CPU gauge
 func updateCPUGauge(g *ui.Gauge) {
-	g.Percent = getCPUpercent()
+	g.Percent, _ = getCPUpercent()
 }
 
 // createDiskGauges display informations about the physical disks

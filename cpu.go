@@ -17,9 +17,7 @@ type cpuinfo struct {
 }
 
 // Get informations about the cpu by using `gopesutil` package
-func getCPUinfo() cpuinfo {
-	ret := cpuinfo{}
-
+func getCPUinfo() (ret cpuinfo, err error) {
 	info, err := cpuInfo() // cpu.Info() return a slice of InfoStat structs
 	if err == nil {
 		ret.count = strconv.Itoa(len(info))
@@ -27,17 +25,17 @@ func getCPUinfo() cpuinfo {
 		ret.modelName = info[0].ModelName
 		ret.cpuMhz = strconv.FormatFloat(info[0].Mhz, 'f', 0, 64)
 	}
-	return ret
+	return ret, err
 }
 
 // get the system-wide CPU utilization percentage
-func getCPUpercent() int {
-	ret := 0
+func getCPUpercent() (ret int, err error) {
+	ret = 0
 	percent, err := cpuPercent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
 	if err == nil {
 		ret = int(percent[0]) // even if cpu.Percent() use `false` it return a slice
 	}
-	return ret
+	return ret, err
 }
 
 // `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls

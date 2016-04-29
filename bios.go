@@ -14,11 +14,11 @@ type biosinfo struct {
 func getBIOSinfo() biosinfo { //TODO add other systems than Linux
 	ret := biosinfo{}
 
-	ret.boardName = readAndTrimFile("/sys/devices/virtual/dmi/id/board_name")
-	ret.boardVendor = readAndTrimFile("/sys/devices/virtual/dmi/id/board_vendor")
-	ret.biosVendor = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_vendor")
-	ret.biosVersion = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_version")
-	ret.biosDate = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_date")
+	ret.boardName, _ = readAndTrimFile("/sys/devices/virtual/dmi/id/board_name")
+	ret.boardVendor, _ = readAndTrimFile("/sys/devices/virtual/dmi/id/board_vendor")
+	ret.biosVendor, _ = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_vendor")
+	ret.biosVersion, _ = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_version")
+	ret.biosDate, _ = readAndTrimFile("/sys/devices/virtual/dmi/id/bios_date")
 
 	return ret
 }
