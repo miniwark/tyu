@@ -48,7 +48,7 @@ The temperature info is only a display placeholder for now. It will be implement
 
 Version 0.2
 -----------
-- [ ] Add tests
+- [x] Add tests
 - [x] Continuous integration
 - [ ] Refactor variables and function names
 - [ ] Refactor error checking

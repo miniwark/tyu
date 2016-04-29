@@ -1,3 +1,10 @@
+Version 0.2
+===========
+
+* Add tests with 70% coverage
+* Add command line options
+
+
 Version 0.1
 ===========
 
