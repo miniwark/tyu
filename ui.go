@@ -145,10 +145,10 @@ func createRAMGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage and label of the RAM gauge
 func updateRAMGauge(g *ui.Gauge) {
-	mem := getMeminfo() // TODO replace getMeminfo() by two separate types & functions, or merge updateRAMGauge & updateSwapGauge to a generic func
+	ram := getRaminfo()
 
-	g.Percent = mem.ramUsedPercent
-	g.Label = "{{percent}}% - " + mem.ramUsed + "/" + mem.ramTotal + " GiB"
+	g.Percent = ram.usedPercent
+	g.Label = "{{percent}}% - " + ram.used + "/" + ram.total + " GiB"
 }
 
 // createSwapGauge display physical swap usage informations
@@ -165,10 +165,10 @@ func createSwapGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage and label of the Swap gauge
 func updateSwapGauge(g *ui.Gauge) {
-	swap := getMeminfo() // TODO replace getMeminfo() by two separate types & functions, or merge updateRAMGauge & updateSwapGauge to a generic func
+	swap := getSwapinfo()
 
-	g.Percent = swap.swapUsedPercent
-	g.Label = "{{percent}}% - " + swap.ramUsed + "/" + swap.ramTotal + " GiB"
+	g.Percent = swap.usedPercent
+	g.Label = "{{percent}}% - " + swap.used + "/" + swap.total + " GiB"
 }
 
 // createCPUGauge display information about the CPU usage
