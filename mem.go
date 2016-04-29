@@ -15,7 +15,7 @@ type raminfo struct {
 }
 
 // meminfo represent the memory usage statistics
-type swapinfo struct {
+type swapinfo struct { //TODO use the same struct for ram and swap ?
 	total       string // total available swap memory in gigabytes
 	used        string // used swap memory in gigabytes
 	usedPercent int    // used swap memory in percents of total memory
@@ -23,9 +23,7 @@ type swapinfo struct {
 
 // Get RAM usage informations by using `gopesutil` package
 // and then convert them to `string` or `int`
-func getRaminfo() raminfo {
-	ret := raminfo{}
-
+func getRaminfo() (ret raminfo, err error) { //TODO use the same func for ram and swap ?
 	ram, err := memVirtualMemory()
 	if err == nil {
 		ret.total = strconv.FormatFloat(float64(ram.Total)/(1024*1024*1024), 'f', 2, 64) // (1024*1024*1024) to convert to GiB from `gopesutil`
@@ -33,14 +31,12 @@ func getRaminfo() raminfo {
 		ret.usedPercent = int(ram.UsedPercent)
 	}
 
-	return ret
+	return ret, err
 }
 
 // Get Swap usage informations by using `gopesutil` package
 // and then convert them to `string` or `int`
-func getSwapinfo() swapinfo {
-	ret := swapinfo{}
-
+func getSwapinfo() (ret swapinfo, err error) {
 	swap, err := memSwapMemory()
 	if err == nil {
 		ret.total = strconv.FormatFloat(float64(swap.Total)/(1024*1024*1024), 'f', 2, 64)
@@ -48,7 +44,7 @@ func getSwapinfo() swapinfo {
 		ret.usedPercent = int(swap.UsedPercent)
 	}
 
-	return ret
+	return ret, err
 }
 
 // wrap `mem.VirtualMemory()` in an unexported variable for testability

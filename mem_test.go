@@ -27,8 +27,9 @@ func TestGetRaminfo(t *testing.T) {
 		used:        strconv.FormatFloat(1.00, 'f', 2, 64),
 		usedPercent: int(100),
 	}
-	actual := getRaminfo()
+	actual, err := getRaminfo()
 
+	assert.NoError(t, err, "`getRaminfo()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getRaminfo` should be equal to main.raminfo{total:\"1.00\", used:\"1.00\", usedPercent:100}")
 
 	// teardown
@@ -42,7 +43,7 @@ func TestGetRaminfoType(t *testing.T) {
 		used:        "",
 		usedPercent: int(0),
 	}
-	actual := getRaminfo()
+	actual, _ := getRaminfo()
 
 	assert.IsType(t, expected, actual, "`getRaminfo()` should return a `raminfo` type")
 	assert.IsType(t, expected.total, actual.total, "`getRaminfo()` should return a `total` field with a string type")
@@ -69,8 +70,9 @@ func TestGetSwapinfo(t *testing.T) {
 		used:        strconv.FormatFloat(1.00, 'f', 2, 64),
 		usedPercent: int(100),
 	}
-	actual := getSwapinfo()
+	actual, err := getSwapinfo()
 
+	assert.NoError(t, err, "`getSwapinfo()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getSwapinfo()` should be equal to main.swapinfo{total:\"1.00\", used:\"1.00\", usedPercent:100}")
 
 	// teardown
@@ -84,7 +86,7 @@ func TestGetSwapinfoType(t *testing.T) {
 		used:        "",
 		usedPercent: int(0),
 	}
-	actual := getSwapinfo()
+	actual, _ := getSwapinfo()
 
 	assert.IsType(t, expected, actual, "`getSwapinfo()` should return a `swapinfo` type")
 	assert.IsType(t, expected.total, actual.total, "`getSwapinfo()` should return a `ramTotal` field with a string type")

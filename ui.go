@@ -145,7 +145,7 @@ func createRAMGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage and label of the RAM gauge
 func updateRAMGauge(g *ui.Gauge) {
-	ram := getRaminfo()
+	ram, _ := getRaminfo()
 
 	g.Percent = ram.usedPercent
 	g.Label = "{{percent}}% - " + ram.used + "/" + ram.total + " GiB"
@@ -165,7 +165,7 @@ func createSwapGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage and label of the Swap gauge
 func updateSwapGauge(g *ui.Gauge) {
-	swap := getSwapinfo()
+	swap, _ := getSwapinfo()
 
 	g.Percent = swap.usedPercent
 	g.Label = "{{percent}}% - " + swap.used + "/" + swap.total + " GiB"
