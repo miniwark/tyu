@@ -50,9 +50,10 @@ Version 0.2
 -----------
 - [x] Add tests
 - [x] Continuous integration
-- [ ] Refactor variables and function names
-- [ ] Refactor error checking
+- [x] Refactor variables and function names
+- [x] Refactor error checking
 - [x] Add command line options
+- [x] Change the display depending of the number of mounted disk
 
 
 Version 0.3
@@ -61,7 +62,6 @@ Version 0.3
 - [ ] Improve documentation
 - [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
 - [ ] Improved bytes display. Display KiB if < 1 Mib and Mib if < 1 Gib
-- [ ] Change the display depending of the number of mounted disk
 
 Version 0.4
 -----------
