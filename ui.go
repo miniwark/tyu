@@ -8,7 +8,7 @@ import (
 
 // createHostList display system informations about the host
 func createHostList() *ui.List {
-	host := getHostinfo()
+	host, _ := getHostinfo()
 
 	l := ui.NewList()
 	l.BorderLabel = "Host "
@@ -126,7 +126,7 @@ func createProcList() *ui.List { //TODO move over ramGauge
 
 // updateProcList update processes informations
 func updateProcList(g *ui.List) {
-	procs := getProcinfo()
+	procs, _ := getProcinfo()
 	g.Items[0] = "[Tasks   ](fg-cyan)" + procs.total
 	g.Items[1] = "[Running ](fg-cyan)" + procs.running
 }

@@ -46,8 +46,9 @@ func TestGetHostinfo(t *testing.T) {
 		osRelease:       "@0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz", //
 		arch:            "@0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz", //
 	}
-	actual := getHostinfo()
+	actual, err := getHostinfo()
 
+	assert.NoError(t, err, "`getHostinfo()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getHostinfo()` should be equal to main.hostinfo{hostname:\"hostname\", domainname:\"domainname\", os:\"Os\", osRelease:\"1.0.0\", platform:\"Platform\", platformVersion:\"10.00\", arch:\"x86_64\"}")
 
 	// teardown
@@ -66,7 +67,7 @@ func TestGetHostinfoType(t *testing.T) {
 		platformVersion: "",
 		arch:            "",
 	}
-	actual := getHostinfo()
+	actual, _ := getHostinfo()
 
 	assert.IsType(t, expected, actual, "`getHostinfo()` should return a `hostinfo` type")
 	assert.IsType(t, expected.hostname, actual.hostname, "`getHostinfo()` should return a `hostname` field with a string type")

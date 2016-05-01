@@ -20,9 +20,7 @@ type hostinfo struct {
 }
 
 // Get informations about the computer by using`gopesutil` and `syscall` packages
-func getHostinfo() hostinfo {
-	ret := hostinfo{}
-
+func getHostinfo() (ret hostinfo, err error) {
 	info, err := hostInfo()
 	if err == nil {
 		ret.hostname = info.Hostname
@@ -32,15 +30,17 @@ func getHostinfo() hostinfo {
 	}
 
 	if ret.os == "Linux" {
-		uts, err := getUname()
-		if err == nil {
+		uts, err1 := getUname() //TODO move this un a separate func?
+		if err1 == nil {
 			ret.domainname = int8SliceToString(uts.Domainname[:])
 			ret.osRelease = int8SliceToString(uts.Release[:])
 			ret.arch = int8SliceToString(uts.Machine[:])
+		} else {
+			err = appendError(err, err1)
 		}
 	}
 
-	return ret
+	return ret, err
 
 	//TODO add uname like information from other OS
 }
