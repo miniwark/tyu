@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Convert and concatenate a []int8 slice to a string
+// int8SliceToString convert and concatenate a []int8 slice to a string
 // inspired by perterGo: https://groups.google.com/forum/#!topic/golang-nuts/Jel8Bb-YwX8
 func int8SliceToString(char []int8) string {
 	s := make([]string, len(char))
@@ -17,7 +17,7 @@ func int8SliceToString(char []int8) string {
 	// TODO maybe change this to convert exclusively to [65]int8 array ?
 }
 
-// Read a text file and return the content without the EOF carriage return
+// readAndTrimFile read a text file and return the content without the EOF carriage return
 // this utility may be used with files from `/sys` or `/proc` file systems
 func readAndTrimFile(path string) (ret string, err error) {
 	ret = ""
@@ -29,7 +29,7 @@ func readAndTrimFile(path string) (ret string, err error) {
 	//TODO manage multiple line files ?
 }
 
-// `appendError()` combines two errors into one
+// appendError() combines two errors into one
 func appendError(err1 error, err2 error) (err error) {
 	switch {
 	case err1 != nil && err2 != nil:
