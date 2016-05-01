@@ -8,8 +8,8 @@ import (
 	"github.com/shirou/gopsutil/host"
 )
 
-// hostinfo represent the computer informations
-type hostinfo struct {
+// hostStat represent the computer informations
+type hostStat struct {
 	hostname        string // host name of the system ex 'mycomputer'
 	domainname      string // domain name of the system ex 'mydomain.com'
 	os              string // OS type ex 'Linux'
@@ -19,8 +19,8 @@ type hostinfo struct {
 	arch            string // architectureex. 'x86_64'
 }
 
-// Get informations about the computer by using`gopesutil` and `syscall` packages
-func getHostinfo() (ret hostinfo, err error) {
+// getHostStat get informations about the computer by using`gopesutil` and `syscall` packages
+func getHostStat() (ret hostStat, err error) {
 	info, err := hostInfo()
 	if err == nil {
 		ret.hostname = info.Hostname

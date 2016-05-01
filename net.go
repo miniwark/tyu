@@ -2,14 +2,14 @@ package main
 
 import "github.com/shirou/gopsutil/net"
 
-// Netinfo represent the network traffic informations
-type Netinfo struct {
+// NetStat represent the network traffic informations
+type NetStat struct {
 	up   float64
 	down float64
 }
 
-// Get informations about the net traffic
-func getNetinfo() (ret Netinfo, err error) {
+// getNetStat get informations about the net traffic
+func getNetStat() (ret NetStat, err error) {
 	iocounters, err := netIocounters(false)
 	if err == nil {
 		ret.up = float64(iocounters[0].BytesSent) / 1024

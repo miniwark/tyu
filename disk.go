@@ -6,8 +6,8 @@ import (
 	"github.com/shirou/gopsutil/disk"
 )
 
-// diskinfo represents the physical disk usage statistics
-type diskinfo struct {
+// diskStat represents the physical disk usage statistics
+type diskStat struct {
 	device      string // ex. '/dev/sda1'
 	path        string // ex. '/''
 	total       string
@@ -15,8 +15,8 @@ type diskinfo struct {
 	usedPercent int
 }
 
-// Return a slice of physical disks usage statistics by using `gopesutil` package
-func getDiskinfo() (ret []diskinfo, err error) {
+// getDiskStat return a slice of physical disks usage statistics by using `gopesutil` package
+func getDiskStat() (ret []diskStat, err error) {
 	// get the partitions list
 	partitions, err := diskPartitions(false) //`false` to get only physical disks
 	if err == nil {
@@ -24,7 +24,7 @@ func getDiskinfo() (ret []diskinfo, err error) {
 		for i := range partitions {
 			disk, err1 := diskUsage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
 			if err1 == nil {
-				d := diskinfo{
+				d := diskStat{
 					device:      partitions[i].Device,
 					path:        disk.Path,
 					total:       strconv.FormatFloat(float64(disk.Total)/(1024*1024*1024), 'f', 2, 64), // (1024*1024*1024) to convert to GiB from `gopesutil`

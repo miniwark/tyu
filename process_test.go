@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetProcinfo test the returned fields values and types of `getProcinfo()`
-func TestGetProcinfo(t *testing.T) {
+// TestGetProcStat test the returned fields values and types of `getProcStat()`
+func TestGetProcStat(t *testing.T) {
 	// setup the faking of `process.Pids()` & `process.NewProcess()`
 	oldProcessPids := processPids
 	oldProcStatus := procStatus
@@ -22,31 +22,31 @@ func TestGetProcinfo(t *testing.T) {
 	}
 
 	// test
-	expected := procinfo{
+	expected := procStat{
 		total:   strconv.FormatInt(1, 10),
 		running: strconv.FormatInt(1, 10),
 	}
-	actual, err := getProcinfo()
+	actual, err := getProcStat()
 
-	assert.NoError(t, err, "`getProcinfo()` should not have returned an error")
-	assert.Equal(t, expected, actual, "`getProcinfo()` should be equal to main.procinfo{total:\"1\", running:\"1\"}")
+	assert.NoError(t, err, "`getProcStat()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getProcStat()` should be equal to main.procStat{total:\"1\", running:\"1\"}")
 
 	// teardown
 	processPids = oldProcessPids
 	procStatus = oldProcStatus
 }
 
-// TestGetProcinfoType test if `getProcinfo()` return a `procinfo` type and if each fields have the correct types
-func TestGetProcinfoType(t *testing.T) {
-	expected := procinfo{
+// TestGetProcStatType test if `getProcStat()` return a `procStat` type and if each fields have the correct types
+func TestGetProcStatType(t *testing.T) {
+	expected := procStat{
 		total:   "", // the result values of the fields are not tested
 		running: "",
 	}
-	actual, _ := getProcinfo()
+	actual, _ := getProcStat()
 
-	assert.IsType(t, expected, actual, "`getProcinfo()` should return a `procinfo` type")
-	assert.IsType(t, expected.total, actual.total, "`getProcinfo()` should return a `total` field with a string type")
-	assert.IsType(t, expected.running, actual.running, "`getProcinfo()` should return a `ramUsed` field with a string type")
+	assert.IsType(t, expected, actual, "`getProcStat()` should return a `procStat` type")
+	assert.IsType(t, expected.total, actual.total, "`getProcStat()` should return a `total` field with a string type")
+	assert.IsType(t, expected.running, actual.running, "`getProcStat()` should return a `ramUsed` field with a string type")
 }
 
 // TestProcessPids test if `processPids()` return a []int32 slice

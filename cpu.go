@@ -7,30 +7,30 @@ import (
 	"github.com/shirou/gopsutil/cpu"
 )
 
-// cpuinfo represent the CPU informations
-type cpuinfo struct {
+// cpuStat represent the CPU informations
+type cpuStat struct {
 	count     string // number of CPUs
 	vendorID  string // vendor name ex. AuthenticAMD, GenuineIntel
 	modelName string // CPU model name
-	cpuMhz    string // frequency of the CPU in Mhz
-	//TODO temperature: see lm-sensors
+	mhz       string // frequency of the CPU in Mhz
 }
 
-// Get informations about the cpu by using `gopesutil` package
-func getCPUinfo() (ret cpuinfo, err error) {
-	info, err := cpuInfo() // cpu.Info() return a slice of InfoStat structs
+//TODO var temperature: see lm-sensors
+
+// getCPUStat get informations about the cpu by using `gopesutil` package
+func getCPUStat() (ret cpuStat, err error) {
+	cpu, err := cpuInfo() // cpu.Info() return a slice of InfoStat structs
 	if err == nil {
-		ret.count = strconv.Itoa(len(info))
-		ret.vendorID = info[0].VendorID
-		ret.modelName = info[0].ModelName
-		ret.cpuMhz = strconv.FormatFloat(info[0].Mhz, 'f', 0, 64)
+		ret.count = strconv.Itoa(len(cpu))
+		ret.vendorID = cpu[0].VendorID
+		ret.modelName = cpu[0].ModelName
+		ret.mhz = strconv.FormatFloat(cpu[0].Mhz, 'f', 0, 64)
 	}
 	return ret, err
 }
 
-// get the system-wide CPU utilization percentage
-func getCPUpercent() (ret int, err error) {
-	ret = 0
+// getCPUPercent get the system-wide CPU utilization percentage
+func getCPUPercent() (ret int, err error) {
 	percent, err := cpuPercent((500 * time.Millisecond), false) // 0.5 seconds, `false` for system wide
 	if err == nil {
 		ret = int(percent[0]) // even if cpu.Percent() use `false` it return a slice
@@ -38,7 +38,7 @@ func getCPUpercent() (ret int, err error) {
 	return ret, err
 }
 
-// `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
+// `getCPUPercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
 // as all the host informations will normaly not change contrary to CPU percent usage
 
 // wrap `cpu.Info()` in an unexported variable for testability

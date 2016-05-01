@@ -6,15 +6,15 @@ import (
 	"github.com/shirou/gopsutil/process"
 )
 
-// procinfo represent the processes informations
-type procinfo struct {
+// procStat represent the processes informations
+type procStat struct {
 	total   string
 	running string
 	//TODO add zombies threads ?
 }
 
-// Get informations about the processes
-func getProcinfo() (ret procinfo, err error) {
+// getProcStat get informations about the processes
+func getProcStat() (ret procStat, err error) {
 	pids, err := processPids() //TODO replace by something like psutil.process_iter() if available in gopsutils
 	if err == nil {
 		run := 0

@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetMeminfo test the returned fields values of `getHostinfo()`
-func TestGetHostinfo(t *testing.T) {
+// TestGetHostStat test the returned fields values of `getHostStat()`
+func TestGetHostStat(t *testing.T) {
 	// setup the faking of `host.Info()`
 	oldHostInfo := hostInfo
 	hostInfo = func() (*host.InfoStat, error) {
@@ -37,7 +37,7 @@ func TestGetHostinfo(t *testing.T) {
 	}
 
 	// test
-	expected := hostinfo{
+	expected := hostStat{
 		hostname:        "abc",
 		os:              "Linux",
 		platform:        "Abc",
@@ -46,19 +46,19 @@ func TestGetHostinfo(t *testing.T) {
 		osRelease:       "@0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz", //
 		arch:            "@0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ@abcdefghijklmnopqrstuvwxyz", //
 	}
-	actual, err := getHostinfo()
+	actual, err := getHostStat()
 
-	assert.NoError(t, err, "`getHostinfo()` should not have returned an error")
-	assert.Equal(t, expected, actual, "`getHostinfo()` should be equal to main.hostinfo{hostname:\"hostname\", domainname:\"domainname\", os:\"Os\", osRelease:\"1.0.0\", platform:\"Platform\", platformVersion:\"10.00\", arch:\"x86_64\"}")
+	assert.NoError(t, err, "`getHostStat()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getHostStat()` should be equal to main.hostStat{hostname:\"hostname\", domainname:\"domainname\", os:\"Os\", osRelease:\"1.0.0\", platform:\"Platform\", platformVersion:\"10.00\", arch:\"x86_64\"}")
 
 	// teardown
 	hostInfo = oldHostInfo
 	getUname = oldgetUname
 }
 
-// TestGetHostinfoType test if `getHostinfo()` return a `procinfo` type and if each fields have the correct types
-func TestGetHostinfoType(t *testing.T) {
-	expected := hostinfo{
+// TestGetHostStatType test if `getHostStat()` return a `hostStat` type and if each fields have the correct types
+func TestGetHostStatType(t *testing.T) {
+	expected := hostStat{
 		hostname:        "", // the result values of the fields are not tested
 		domainname:      "",
 		os:              "",
@@ -67,16 +67,16 @@ func TestGetHostinfoType(t *testing.T) {
 		platformVersion: "",
 		arch:            "",
 	}
-	actual, _ := getHostinfo()
+	actual, _ := getHostStat()
 
-	assert.IsType(t, expected, actual, "`getHostinfo()` should return a `hostinfo` type")
-	assert.IsType(t, expected.hostname, actual.hostname, "`getHostinfo()` should return a `hostname` field with a string type")
-	assert.IsType(t, expected.domainname, actual.domainname, "`getHostinfo()` should return a `domainname` field with a string type")
-	assert.IsType(t, expected.os, actual.os, "`getHostinfo()` should return a `os` field with a string type")
-	assert.IsType(t, expected.osRelease, actual.osRelease, "`getHostinfo()` should return a `osRelease` field with a string type")
-	assert.IsType(t, expected.platform, actual.platform, "`getHostinfo()` should return a `platform` field with a string type")
-	assert.IsType(t, expected.platformVersion, actual.platformVersion, "`getHostinfo()` should return a `platformVersion` field with a string type")
-	assert.IsType(t, expected.arch, actual.arch, "`getHostinfo()` should return a `arch` field with a string type")
+	assert.IsType(t, expected, actual, "`getHostStat()` should return a `hostStat` type")
+	assert.IsType(t, expected.hostname, actual.hostname, "`getHostStat()` should return a `hostname` field with a string type")
+	assert.IsType(t, expected.domainname, actual.domainname, "`getHostStat()` should return a `domainname` field with a string type")
+	assert.IsType(t, expected.os, actual.os, "`getHostStat()` should return a `os` field with a string type")
+	assert.IsType(t, expected.osRelease, actual.osRelease, "`getHostStat()` should return a `osRelease` field with a string type")
+	assert.IsType(t, expected.platform, actual.platform, "`getHostStat()` should return a `platform` field with a string type")
+	assert.IsType(t, expected.platformVersion, actual.platformVersion, "`getHostStat()` should return a `platformVersion` field with a string type")
+	assert.IsType(t, expected.arch, actual.arch, "`getHostStat()` should return a `arch` field with a string type")
 }
 
 // TestGetUptime test the returned value of `getUptime()`

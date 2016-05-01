@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetRaminfo test the returned fields values of `getMeminfo()`
-func TestGetRaminfo(t *testing.T) {
+// TestGetRAMStat test the returned fields values of `getRAMStat()`
+func TestGetRAMStat(t *testing.T) {
 	// setup the faking of `mem.VirtualMemory()`
 	oldMemVirtualMemory := memVirtualMemory
 	memVirtualMemory = func() (*mem.VirtualMemoryStat, error) {
@@ -22,37 +22,37 @@ func TestGetRaminfo(t *testing.T) {
 	}
 
 	// test
-	expected := meminfo{
+	expected := memStat{
 		total:       strconv.FormatFloat(1.00, 'f', 2, 64),
 		used:        strconv.FormatFloat(1.00, 'f', 2, 64),
 		usedPercent: int(100),
 	}
-	actual, err := getRaminfo()
+	actual, err := getRAMStat()
 
-	assert.NoError(t, err, "`getRaminfo()` should not have returned an error")
-	assert.Equal(t, expected, actual, "`getRaminfo` should be equal to main.meminfo{total:\"1.00\", used:\"1.00\", usedPercent:100}")
+	assert.NoError(t, err, "`getRAMStat()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getRAMStat` should be equal to main.memStat{total:\"1.00\", used:\"1.00\", usedPercent:100}")
 
 	// teardown
 	memVirtualMemory = oldMemVirtualMemory
 }
 
-// TestGetRaminfoType test if `getRaminfo()` return a `meminfo` type and if each fields have the correct types
-func TestGetRaminfoType(t *testing.T) {
-	expected := meminfo{
+// TestGetRAMStatType test if `getRAMStat()` return a `memStat` type and if each fields have the correct types
+func TestGetRAMStatType(t *testing.T) {
+	expected := memStat{
 		total:       "", // the result values of the fields are not tested
 		used:        "",
 		usedPercent: int(0),
 	}
-	actual, _ := getRaminfo()
+	actual, _ := getRAMStat()
 
-	assert.IsType(t, expected, actual, "`getRaminfo()` should return a `meminfo` type")
-	assert.IsType(t, expected.total, actual.total, "`getRaminfo()` should return a `total` field with a string type")
-	assert.IsType(t, expected.used, actual.used, "`getRaminfo()` should return a `used` field with a string type")
-	assert.IsType(t, expected.usedPercent, actual.usedPercent, "`getRaminfo()` should return a `usedPercent` field with an int type")
+	assert.IsType(t, expected, actual, "`getRAMStat()` should return a `memStat` type")
+	assert.IsType(t, expected.total, actual.total, "`getRAMStat()` should return a `total` field with a string type")
+	assert.IsType(t, expected.used, actual.used, "`getRAMStat()` should return a `used` field with a string type")
+	assert.IsType(t, expected.usedPercent, actual.usedPercent, "`getRAMStat()` should return a `usedPercent` field with an int type")
 }
 
-// TestGetSwapinfo test the returned fields values of `getSwapinfo()`
-func TestGetSwapinfo(t *testing.T) {
+// TestGetSwapStat test the returned fields values of `getSwapStat()`
+func TestGetSwapStat(t *testing.T) {
 	// setup the faking of `mem.SwapMemory()`
 	OldMemSwapMemory := memSwapMemory
 	memSwapMemory = func() (*mem.SwapMemoryStat, error) {
@@ -65,33 +65,33 @@ func TestGetSwapinfo(t *testing.T) {
 	}
 
 	// test
-	expected := meminfo{
+	expected := memStat{
 		total:       strconv.FormatFloat(1.00, 'f', 2, 64),
 		used:        strconv.FormatFloat(1.00, 'f', 2, 64),
 		usedPercent: int(100),
 	}
-	actual, err := getSwapinfo()
+	actual, err := getSwapStat()
 
-	assert.NoError(t, err, "`getSwapinfo()` should not have returned an error")
-	assert.Equal(t, expected, actual, "`getSwapinfo()` should be equal to main.meminfo{total:\"1.00\", used:\"1.00\", usedPercent:100}")
+	assert.NoError(t, err, "`getSwapStat()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getSwapStat()` should be equal to main.memStat{total:\"1.00\", used:\"1.00\", usedPercent:100}")
 
 	// teardown
 	memSwapMemory = OldMemSwapMemory
 }
 
-// TestGetSwapinfoType test if `getSwapinfo()` return a `meminfo` type and if each fields have the correct types
-func TestGetSwapinfoType(t *testing.T) {
-	expected := meminfo{
+// TestGetSwapStatType test if `getSwapStat()` return a `memStat` type and if each fields have the correct types
+func TestGetSwapStatType(t *testing.T) {
+	expected := memStat{
 		total:       "", // the result values of the fields are not tested
 		used:        "",
 		usedPercent: int(0),
 	}
-	actual, _ := getSwapinfo()
+	actual, _ := getSwapStat()
 
-	assert.IsType(t, expected, actual, "`getSwapinfo()` should return a `meminfo` type")
-	assert.IsType(t, expected.total, actual.total, "`getSwapinfo()` should return a `ramTotal` field with a string type")
-	assert.IsType(t, expected.used, actual.used, "`getSwapinfo()` should return a `ramUsed` field with a string type")
-	assert.IsType(t, expected.usedPercent, actual.usedPercent, "`getSwapinfo()` should return a `ramUsedPercent` field with an int type")
+	assert.IsType(t, expected, actual, "`getSwapStat()` should return a `memStat` type")
+	assert.IsType(t, expected.total, actual.total, "`getSwapStat()` should return a `total` field with a string type")
+	assert.IsType(t, expected.used, actual.used, "`getSwapStat()` should return a `used` field with a string type")
+	assert.IsType(t, expected.usedPercent, actual.usedPercent, "`getSwapStat()` should return a `usedPercent` field with an int type")
 }
 
 // TestMemVirtualMemory test if `memVirtualMemory()` return a value with a *mem.VirtualMemoryStat type

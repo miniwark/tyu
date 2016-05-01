@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TestGetNetinfo test the returned fields values of `getNetinfo()`
-func TestGetNetinfo(t *testing.T) {
+// TestGetNetStat test the returned fields values of `getNetStat()`
+func TestGetNetStat(t *testing.T) {
 	// setup the faking of `net.IOCounters()`
 	oldNetIocounters := netIocounters
 	netIocounters = func(pernic bool) ([]net.IOCountersStat, error) {
@@ -22,30 +22,30 @@ func TestGetNetinfo(t *testing.T) {
 	}
 
 	// test
-	expected := Netinfo{
+	expected := NetStat{
 		up:   float64(1),
 		down: float64(1),
 	}
-	actual, err := getNetinfo()
+	actual, err := getNetStat()
 
-	assert.NoError(t, err, "`getNetinfo()` should not have returned an error")
-	assert.Equal(t, expected, actual, "`getNetinfo()` should be equal to main.Netinfo{up:1, down:1}")
+	assert.NoError(t, err, "`getNetStat()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getNetStat()` should be equal to main.NetStat{up:1, down:1}")
 
 	// teardown
 	netIocounters = oldNetIocounters
 }
 
-// TestGetNetinfoType test if `getNetinfo()` return a `Netinfo` type and if each fields have the correct types
-func TestGetNetinfoType(t *testing.T) {
-	expected := Netinfo{
+// TestGetNetStatType test if `getNetStat()` return a `NetStat` type and if each fields have the correct types
+func TestGetNetStatType(t *testing.T) {
+	expected := NetStat{
 		up:   float64(0), // the result values of the fields are not tested
 		down: float64(0),
 	}
-	actual, _ := getNetinfo()
+	actual, _ := getNetStat()
 
-	assert.IsType(t, expected, actual, "`getNetinfo()` should return a `Netinfo` type")
-	assert.IsType(t, expected.up, actual.up, "`getNetinfo()` should return a `up` field with a float64 type")
-	assert.IsType(t, expected.down, actual.down, "`getNetinfo()` should return a `down` field with a float64 type")
+	assert.IsType(t, expected, actual, "`getNetStat()` should return a `NetStat` type")
+	assert.IsType(t, expected.up, actual.up, "`getNetStat()` should return a `up` field with a float64 type")
+	assert.IsType(t, expected.down, actual.down, "`getNetStat()` should return a `down` field with a float64 type")
 }
 
 // TestNetIocounters test if `netIocounters()` return a value with a []net.IOCountersStat slice

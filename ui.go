@@ -8,7 +8,7 @@ import (
 
 // createHostList display system informations about the host
 func createHostList() *ui.List {
-	host, _ := getHostinfo()
+	host, _ := getHostStat()
 
 	l := ui.NewList()
 	l.BorderLabel = "Host "
@@ -37,15 +37,15 @@ func updateHostList(g *ui.List) {
 
 // createCPUList display informations about the CPUs
 func createCPUList() *ui.List {
-	cpu, _ := getCPUinfo()
+	cpu, _ := getCPUStat()
 
 	l := ui.NewList()
 	l.BorderLabel = "CPU "
 	l.Items = []string{
-		"[CPUs        ](fg-cyan)" + cpu.count, //TODO review item names compared to other cpu utilities
+		"[CPUs        ](fg-cyan)" + cpu.count,
 		"[Vendor      ](fg-cyan)" + cpu.vendorID,
 		"[Model       ](fg-cyan)" + cpu.modelName, //TODO use refreshing rate to display roll long text ?
-		"[Frequency   ](fg-cyan)" + cpu.cpuMhz + " Mhz",
+		"[Frequency   ](fg-cyan)" + cpu.mhz + " Mhz",
 		"[Temperature ](fg-cyan)", //TODO CPU temperature
 	}
 	l.Width = 39
@@ -63,7 +63,7 @@ func updateCPUList(g *ui.List) {
 
 // createBIOSList display bios and motherboard informations
 func createBIOSList() *ui.List {
-	bios, _ := getBIOSinfo()
+	bios, _ := getBIOSStat()
 
 	l := ui.NewList()
 	l.BorderLabel = "BIOS "
@@ -96,11 +96,11 @@ func createNetList() *ui.List { //TODO move over ramGauge
 }
 
 // NetworkOld keep track of network traffic up & down
-var NetworkOld Netinfo //TODO get rid of this globals
+var NetworkOld NetStat //TODO get rid of this globals
 
 //  updateNetList update network informations
 func updateNetList(g *ui.List) {
-	net, _ := getNetinfo()
+	net, _ := getNetStat()
 	up := net.up - NetworkOld.up
 	down := net.down - NetworkOld.down
 	NetworkOld = net
@@ -126,7 +126,7 @@ func createProcList() *ui.List { //TODO move over ramGauge
 
 // updateProcList update processes informations
 func updateProcList(g *ui.List) {
-	procs, _ := getProcinfo()
+	procs, _ := getProcStat()
 	g.Items[0] = "[Tasks   ](fg-cyan)" + procs.total
 	g.Items[1] = "[Running ](fg-cyan)" + procs.running
 }
@@ -145,7 +145,7 @@ func createRAMGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage and label of the RAM gauge
 func updateRAMGauge(g *ui.Gauge) {
-	ram, _ := getRaminfo()
+	ram, _ := getRAMStat()
 
 	g.Percent = ram.usedPercent
 	g.Label = "{{percent}}% - " + ram.used + "/" + ram.total + " GiB"
@@ -163,9 +163,9 @@ func createSwapGauge() *ui.Gauge {
 	return g
 }
 
-// updateRAMGauge update the percentage and label of the Swap gauge
+// updateSwapGauge update the percentage and label of the Swap gauge
 func updateSwapGauge(g *ui.Gauge) {
-	swap, _ := getSwapinfo()
+	swap, _ := getSwapStat()
 
 	g.Percent = swap.usedPercent
 	g.Label = "{{percent}}% - " + swap.used + "/" + swap.total + " GiB"
@@ -185,13 +185,13 @@ func createCPUGauge() *ui.Gauge {
 
 // updateRAMGauge update the percentage of the CPU gauge
 func updateCPUGauge(g *ui.Gauge) {
-	g.Percent, _ = getCPUpercent()
+	g.Percent, _ = getCPUPercent()
 }
 
 // createDiskGauges display informations about the physical disks
 // up to 3 disks. return an arrau of termui.Gauge
 func createDiskGauge() []*ui.Gauge {
-	disk, _ := getDiskinfo()
+	disk, _ := getDiskStat()
 
 	g := make([]*ui.Gauge, 3) // display  3 disks max
 
@@ -211,7 +211,7 @@ func createDiskGauge() []*ui.Gauge {
 
 // updateRAMGauge update the percentages of the disk gauges
 func updateDiskGauge(g []*ui.Gauge) { //BUG tyu crash when mounting an external disk
-	disk, _ := getDiskinfo()
+	disk, _ := getDiskStat()
 
 	for i := range disk {
 		if i >= 3 { // display 3 disk max
@@ -280,7 +280,7 @@ func dashboard() {
 		)
 
 		// register the dashboard disk gauges widgets
-		disk, _ := getDiskinfo() // TODO try to avoid this check
+		disk, _ := getDiskStat() // TODO try to avoid this check
 		if len(disk) >= 1 {      // one disk or more
 			ui.Render(diskGauge[0])
 		}

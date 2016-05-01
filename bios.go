@@ -1,7 +1,7 @@
 package main
 
-// biosinfo represent the computer motherboard and bios informations
-type biosinfo struct {
+// biosStat represent the computer motherboard and BIOS informations
+type biosStat struct {
 	boardName   string // name of the motherboard ex. 'C-64'
 	boardVendor string // name of the motherboard  vendor ex. 'Commodore'
 	biosVendor  string // name of the BIOS editor ex. 'Coreboot'
@@ -9,9 +9,9 @@ type biosinfo struct {
 	biosDate    string // release date of the BIOS
 }
 
-// Get informations about the BIOS (or UEFI)
+// getBIOSStat get informations about the BIOS (or UEFI)
 // we prefer to read directly from `/sys/devices/virtual/dmi/id/` than `demidecode` to avoid `sudo`
-func getBIOSinfo() (ret biosinfo, err error) { //TODO add other systems than Linux
+func getBIOSStat() (ret biosStat, err error) { //TODO add other systems than Linux
 	var err1, err2, err3, err4, err5 error
 
 	ret.boardName, err1 = readAndTrimFile("/sys/devices/virtual/dmi/id/board_name")
