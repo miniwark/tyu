@@ -14,27 +14,29 @@ type procinfo struct {
 }
 
 // Get informations about the processes
-func getProcinfo() procinfo {
-	ret := procinfo{}
-
+func getProcinfo() (ret procinfo, err error) {
 	pids, err := processPids() //TODO replace by something like psutil.process_iter() if available in gopsutils
 	if err == nil {
 		run := 0
 		for i := range pids {
-			proc, err := process.NewProcess(pids[i])
-			if err == nil { //TODO rename `err` variables names to avoid confusion ?
-				status, err := procStatus(proc)
-				if err == nil {
+			proc, err1 := process.NewProcess(pids[i])
+			if err1 == nil { //TODO rename `err` variables names to avoid confusion ?
+				status, err2 := procStatus(proc)
+				if err2 == nil {
 					if status == "R" { // "R" for running process
 						run++
 					}
+				} else {
+					err = appendError(err, err2)
 				}
+			} else {
+				err = appendError(err, err1)
 			}
 		}
 		ret.total = strconv.Itoa(len(pids))
 		ret.running = strconv.Itoa(run)
 	}
-	return ret
+	return ret, err
 }
 
 // wrap `process.Pids()` in an unexported variable for testability

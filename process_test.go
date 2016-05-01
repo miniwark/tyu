@@ -26,8 +26,10 @@ func TestGetProcinfo(t *testing.T) {
 		total:   strconv.FormatInt(1, 10),
 		running: strconv.FormatInt(1, 10),
 	}
-	actual := getProcinfo()
-	assert.Equal(t, expected, actual, "`getProcinfo` should be equal to main.procinfo{total:\"1\", running:\"1\"}")
+	actual, err := getProcinfo()
+
+	assert.NoError(t, err, "`getProcinfo()` should not have returned an error")
+	assert.Equal(t, expected, actual, "`getProcinfo()` should be equal to main.procinfo{total:\"1\", running:\"1\"}")
 
 	// teardown
 	processPids = oldProcessPids
@@ -40,11 +42,11 @@ func TestGetProcinfoType(t *testing.T) {
 		total:   "", // the result values of the fields are not tested
 		running: "",
 	}
-	actual := getProcinfo()
+	actual, _ := getProcinfo()
 
-	assert.IsType(t, expected, actual, "`getProcinfo` should return a `procinfo` type")
-	assert.IsType(t, expected.total, actual.total, "`getMeminfo()` should return a `total` field with a string type")
-	assert.IsType(t, expected.running, actual.running, "`getMeminfo()` should return a `ramUsed` field with a string type")
+	assert.IsType(t, expected, actual, "`getProcinfo()` should return a `procinfo` type")
+	assert.IsType(t, expected.total, actual.total, "`getProcinfo()` should return a `total` field with a string type")
+	assert.IsType(t, expected.running, actual.running, "`getProcinfo()` should return a `ramUsed` field with a string type")
 }
 
 // TestProcessPids test if `processPids()` return a []int32 slice
