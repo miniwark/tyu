@@ -39,7 +39,7 @@ func getCPUpercent() (ret int, err error) {
 }
 
 // `getCPUpercent` is in a separate func than `getCPUinfo` to avoid unnecessary calls
-// as all the host informations will normaly not change contrary to uptime
+// as all the host informations will normaly not change contrary to CPU percent usage
 
 // wrap `cpu.Info()` in an unexported variable for testability
 var cpuInfo = func() ([]cpu.InfoStat, error) {
