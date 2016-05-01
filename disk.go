@@ -16,16 +16,14 @@ type diskinfo struct {
 }
 
 // Return a slice of physical disks usage statistics by using `gopesutil` package
-func getDiskinfo() []diskinfo {
-	var ret []diskinfo
-
+func getDiskinfo() (ret []diskinfo, err error) {
 	// get the partitions list
 	partitions, err := diskPartitions(false) //`false` to get only physical disks
 	if err == nil {
 		// get usage stats for each partitions
 		for i := range partitions {
-			disk, err := diskUsage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
-			if err == nil {
+			disk, err1 := diskUsage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
+			if err1 == nil {
 				d := diskinfo{
 					device:      partitions[i].Device,
 					path:        disk.Path,
@@ -34,10 +32,12 @@ func getDiskinfo() []diskinfo {
 					usedPercent: int(disk.UsedPercent),
 				}
 				ret = append(ret, d)
+			} else {
+				err = appendError(err, err1)
 			}
 		}
 	}
-	return ret
+	return ret, err
 }
 
 // wrap `disk.Partitions()` in an unexported variable for testability

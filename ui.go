@@ -191,7 +191,7 @@ func updateCPUGauge(g *ui.Gauge) {
 // createDiskGauges display informations about the physical disks
 // up to 3 disks. return an arrau of termui.Gauge
 func createDiskGauge() []*ui.Gauge {
-	disk := getDiskinfo()
+	disk, _ := getDiskinfo()
 
 	g := make([]*ui.Gauge, 3) // display  3 disks max
 
@@ -211,7 +211,7 @@ func createDiskGauge() []*ui.Gauge {
 
 // updateRAMGauge update the percentages of the disk gauges
 func updateDiskGauge(g []*ui.Gauge) { //BUG tyu crash when mounting an external disk
-	disk := getDiskinfo()
+	disk, _ := getDiskinfo()
 
 	for i := range disk {
 		if i >= 3 { // display 3 disk max
@@ -280,8 +280,8 @@ func dashboard() {
 		)
 
 		// register the dashboard disk gauges widgets
-		disk := getDiskinfo() // TODO try to avoid this check
-		if len(disk) >= 1 {   // one disk or more
+		disk, _ := getDiskinfo() // TODO try to avoid this check
+		if len(disk) >= 1 {      // one disk or more
 			ui.Render(diskGauge[0])
 		}
 		if len(disk) >= 2 { // two disks or more
