@@ -43,11 +43,6 @@ func TestGetDiskinfo(t *testing.T) {
 	}
 	actual := getDiskinfo()
 
-	assert.IsType(t, expected[0].device, actual[0].device, "`getDiskinfo()` should return a `device` field with a string type")
-	assert.IsType(t, expected[0].path, actual[0].path, "`getDiskinfo()` should return a `path` field with a string type")
-	assert.IsType(t, expected[0].total, actual[0].total, "`getDiskinfo()` should return a `total` field with a string type")
-	assert.IsType(t, expected[0].used, actual[0].used, "`getDiskinfo()` should return a `used` field with a string type")
-	assert.IsType(t, expected[0].usedPercent, actual[0].usedPercent, "`getDiskinfo()` should return a `usedPercent` field with an int type")
 	assert.Equal(t, expected, actual, "`getDiskinfo` should be equal to []main.diskinfo{main.diskinfo{device:\"/dev/device\", path:\"/path\", total:\"1.00\", used:\"1.00\", usedPercent:100}}")
 
 	// teardown
@@ -57,9 +52,22 @@ func TestGetDiskinfo(t *testing.T) {
 
 // TestGetDiskinfoType test if `getDiskinfo()` return a value with a []diskinfo` slice
 func TestGetDiskinfoType(t *testing.T) {
-	expected := []diskinfo{} // the result value is not tested
+	expected := []diskinfo{
+		{
+			device:      "", // the result value is not tested
+			path:        "",
+			total:       "",
+			used:        "",
+			usedPercent: int(0),
+		},
+	}
 	actual := getDiskinfo()
 
+	assert.IsType(t, expected[0].device, actual[0].device, "`getDiskinfo()` should return a `device` field with a string type")
+	assert.IsType(t, expected[0].path, actual[0].path, "`getDiskinfo()` should return a `path` field with a string type")
+	assert.IsType(t, expected[0].total, actual[0].total, "`getDiskinfo()` should return a `total` field with a string type")
+	assert.IsType(t, expected[0].used, actual[0].used, "`getDiskinfo()` should return a `used` field with a string type")
+	assert.IsType(t, expected[0].usedPercent, actual[0].usedPercent, "`getDiskinfo()` should return a `usedPercent` field with an int type")
 	assert.IsType(t, expected, actual, "`getDiskinfo()` should return a `[]main.diskinfo` slice")
 }
 
