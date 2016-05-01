@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -26,4 +27,20 @@ func readAndTrimFile(path string) (ret string, err error) {
 	}
 	return ret, err
 	//TODO manage multiple line files ?
+}
+
+// `appendError()` combines two errors into one
+func appendError(err1 error, err2 error) (err error) {
+	switch {
+	case err1 != nil && err2 != nil:
+		err = fmt.Errorf("%v; %v", err1, err2)
+	case err1 != nil:
+		err = err1
+	case err2 != nil:
+		err = err2
+	case err1 == nil && err2 == nil:
+		err = nil
+	}
+
+	return err
 }

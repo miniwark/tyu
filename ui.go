@@ -63,7 +63,7 @@ func updateCPUList(g *ui.List) {
 
 // createBIOSList display bios and motherboard informations
 func createBIOSList() *ui.List {
-	bios := getBIOSinfo()
+	bios, _ := getBIOSinfo()
 
 	l := ui.NewList()
 	l.BorderLabel = "BIOS "
