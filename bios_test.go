@@ -16,7 +16,7 @@ func TestGetBIOSinfoType(t *testing.T) {
 		biosVersion: "",
 		biosDate:    "",
 	}
-	actual := getBIOSinfo()
+	actual, _ := getBIOSinfo()
 	assert.IsType(t, expected, actual, "`getBIOSinfo()` should return a `biosinfo` type")
 	assert.IsType(t, expected.boardName, actual.boardName, "`getBIOSinfo()` should return a `boardName` field with a string type")
 	assert.IsType(t, expected.boardVendor, actual.boardVendor, "`getBIOSinfo()` should return a `boardVendor` field with a string type")
