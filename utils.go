@@ -21,7 +21,7 @@ func int8SliceToString(char []int8) string {
 // this utility may be used with files from `/sys` or `/proc` file systems
 var readAndTrimFile = func(path string) (ret string, err error) {
 	ret = ""
-	data, err := ioutil.ReadFile(path)
+	data, err := ioutilReadFile(path)
 	if err == nil {
 		ret = strings.TrimRight(string(data), "\n") // Trimright remove the EOF carriage return
 	}
@@ -43,4 +43,9 @@ func appendError(err1 error, err2 error) (err error) {
 	}
 
 	return err
+}
+
+// wrap `ioutil.ReadFile` in an unexported variable for testability
+var ioutilReadFile = func(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
 }

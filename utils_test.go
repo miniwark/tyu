@@ -30,9 +30,24 @@ func TestReadAndTrimFile(t *testing.T) {
 }
 
 // TestReadAndTrimFileErrorCase1 test than readAndTrimFile() transmit the error from ioutil.ReadFile()
-//func TestReadAndTrimFileErrorCase1(t *testing.T) {
-//TODO
-//}
+func TestReadAndTrimFileErrorCase1(t *testing.T) {
+	// setup the faking of `ioutil.ReadFile()`
+	oldIoutilReadFile := ioutilReadFile
+	ioutilReadFile = func(filename string) ([]byte, error) {
+		ret := []byte{}
+		err := errors.New("Error 1")
+		return ret, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := readAndTrimFile("/fakepath")
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`readAndTrimFile()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	ioutilReadFile = oldIoutilReadFile
+}
 
 // TestAppendErrorCase1 tests the case where appendError() was provided with two errors as arguments
 func TestAppendErrorCase1(t *testing.T) {
@@ -70,4 +85,12 @@ func TestAppendErrorNil(t *testing.T) {
 	err := appendError(nil, nil)
 
 	assert.NoError(t, err, "`appendError(nil, nil)` should not be an error")
+}
+
+// TestIoutilReadFile test if `ioutilReadFile()` return a value with a []byte type
+func TestIoutilReadFile(t *testing.T) {
+	expected := []byte{} // the result value is not tested
+	actual, _ := ioutilReadFile("/fakepath")
+
+	assert.IsType(t, expected, actual, "`ioutilReadFile()` should return a []byte type")
 }
