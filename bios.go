@@ -32,5 +32,3 @@ func getBIOSStat() (ret biosStat, err error) { //TODO add other systems than Lin
 //TODO use `wmic bios get smbiosbiosversion` on windows
 // We do not ask for the board serial number because it need `sudo` on Linux
 // and because it's rarely usefull to look at it on a 'quick' way
-
-//err = fmt.Errorf("%v %v %v %v %v ", err1, err2, err3, err4, err4)
