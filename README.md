@@ -1,7 +1,7 @@
 [![license](https://img.shields.io/badge/license-MIT_License-blue.svg?style=flat-square)](https://github.com/miniwark/tyu/blob/master/LICENSE)
 [![release](https://img.shields.io/badge/release-v_0.2-blue.svg?style=flat-square)](https://github.com/miniwark/tyu/releases)
 [![Build Status](https://drone.io/github.com/miniwark/tyu/status.png)](https://drone.io/github.com/miniwark/tyu/latest)
-[![Test coverage](https://img.shields.io/codecov/c/github/miniwark/tyu/master.svg?style=flat-square)](https://codecov.io/github/miniwark/tyu?branch=master)
+[![Test coverage](https://img.shields.io/codecov/c/github/miniwark/tyu.svg?style=flat-square)](https://codecov.io/gh/miniwark/tyu)
 [![Go Report Card](https://goreportcard.com/badge/github.com/miniwark/tyu?style=flat-square)](https://goreportcard.com/report/github.com/miniwark/tyu)
 
 tyu
