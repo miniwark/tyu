@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/shirou/gopsutil/disk"
@@ -11,7 +13,6 @@ import (
 func TestGetDiskStat(t *testing.T) {
 	// setup the faking of `disk.Partitions()` & `disk.Usage()`
 	oldDiskPartitions := diskPartitions
-	oldDiskUsage := diskUsage
 	diskPartitions = func(all bool) ([]disk.PartitionStat, error) {
 		ret := []disk.PartitionStat{
 			{
@@ -21,6 +22,7 @@ func TestGetDiskStat(t *testing.T) {
 		}
 		return ret, nil
 	}
+	oldDiskUsage := diskUsage
 	diskUsage = func(path string) (*disk.UsageStat, error) {
 		ret := &disk.UsageStat{
 			Path:        "/path",
@@ -45,6 +47,55 @@ func TestGetDiskStat(t *testing.T) {
 
 	assert.NoError(t, err, "`getDiskStat()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getDiskStat()` should be equal to []main.diskStat{main.diskStat{device:\"/dev/device\", path:\"/path\", total:\"1.00\", used:\"1.00\", usedPercent:100}}")
+
+	// teardown
+	diskPartitions = oldDiskPartitions
+	diskUsage = oldDiskUsage
+}
+
+// TestGetDiskStatErrorCase1 test than getCPUStat() transmit the error from disk.Partitions()
+func TestGetDiskStatErrorCase1(t *testing.T) {
+	// setup the faking of `disk.Partitions()` & `disk.Usage()`
+	oldDiskPartitions := diskPartitions
+	diskPartitions = func(all bool) ([]disk.PartitionStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := getDiskStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getDiskStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	diskPartitions = oldDiskPartitions
+}
+
+// TestGetDiskStatErrorCase2 test than getCPUStat() transmit the error from disk.Usage()
+func TestGetDiskStatErrorCase2(t *testing.T) {
+	// setup the faking of `disk.Partitions()` & `disk.Usage()`
+	oldDiskPartitions := diskPartitions
+	oldDiskUsage := diskUsage
+	diskPartitions = func(all bool) ([]disk.PartitionStat, error) {
+		ret := []disk.PartitionStat{
+			{
+				Device:     "/dev/device",
+				Mountpoint: "/mount/point",
+			},
+		}
+		return ret, nil
+	}
+	diskUsage = func(path string) (*disk.UsageStat, error) {
+		err := errors.New("Error 2")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 2")
+	_, actual := getDiskStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getDiskStat()` should be an error equal to \"Error 2\"")
 
 	// teardown
 	diskPartitions = oldDiskPartitions

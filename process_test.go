@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"strconv"
 	"testing"
 
@@ -36,6 +38,76 @@ func TestGetProcStat(t *testing.T) {
 	procStatus = oldProcStatus
 }
 
+// TestGetDiskStatErrorCase1 test than getProcStat() transmit the error from process.Pids()
+func TestGetProcStatErrorCase1(t *testing.T) {
+	// setup the faking of `process.Pids()`
+	oldProcessPids := processPids
+	processPids = func() ([]int32, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := getProcStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getProcStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	processPids = oldProcessPids
+}
+
+// TestGetDiskStatErrorCase2 test than getProcStat() transmit the error from process.NewProcess()
+func TestGetProcStatErrorCase2(t *testing.T) {
+	// setup the faking of `process.Pids()` & process.NewProcess()
+	oldProcessPids := processPids
+	oldProcessNewProcess := processNewProcess
+	processPids = func() ([]int32, error) {
+		ret := []int32{1} // one fake Pid with number 1
+		return ret, nil
+	}
+	processNewProcess = func(pid int32) (*process.Process, error) {
+		err := errors.New("Error 2")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 2")
+	_, actual := getProcStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getProcStat()` should be an error equal to \"Error 2\"")
+
+	// teardown
+	processPids = oldProcessPids
+	processNewProcess = oldProcessNewProcess
+}
+
+// TestGetProcStatErrorCase3 test than getProcStat() transmit the error from procStatus()
+func TestGetProcStatErrorCase3(t *testing.T) {
+	// setup the faking of `process.Pids()` & `process.NewProcess()`
+	oldProcessPids := processPids
+	oldProcStatus := procStatus
+	processPids = func() ([]int32, error) {
+		ret := []int32{1} // one fake Pid with number 1
+		return ret, nil
+	}
+	procStatus = func(proc *process.Process) (string, error) {
+		ret := ""
+		err := errors.New("Error 3")
+		return ret, err
+	}
+
+	// test
+	expected := errors.New("Error 3")
+	_, actual := getProcStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getProcStat()` should be an error equal to \"Error 3\"")
+
+	// teardown
+	processPids = oldProcessPids
+	procStatus = oldProcStatus
+}
+
 // TestGetProcStatType test if `getProcStat()` return a `procStat` type and if each fields have the correct types
 func TestGetProcStatType(t *testing.T) {
 	expected := procStat{
@@ -55,6 +127,14 @@ func TestProcessPids(t *testing.T) {
 	actual, _ := processPids()
 
 	assert.IsType(t, expected, actual, "`processPids()` should return a []int32 slice")
+}
+
+// TestProcessNewProcess test if `processPids()` return a *process.Process type
+func TestProcessNewProcess(t *testing.T) {
+	expected := &process.Process{}
+	actual, _ := processNewProcess(1) //pid nimber is not tested
+
+	assert.IsType(t, expected, actual, "`processNewProcess()` should return a *process.Process type")
 }
 
 // TestProcStatus test if `procStatus()` return a value with a string type

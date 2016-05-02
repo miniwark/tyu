@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/shirou/gopsutil/net"
@@ -35,6 +37,25 @@ func TestGetNetStat(t *testing.T) {
 	netIocounters = oldNetIocounters
 }
 
+// TestGetNetStatErrorCase1 test than getNetStat() transmit the error from net.Iocounters()
+func TestGetNetStatErrorCase1(t *testing.T) {
+	// setup the faking of `net.IOCounters()`
+	oldNetIocounters := netIocounters
+	netIocounters = func(pernic bool) ([]net.IOCountersStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := getNetStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getNetStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	netIocounters = oldNetIocounters
+}
+
 // TestGetNetStatType test if `getNetStat()` return a `NetStat` type and if each fields have the correct types
 func TestGetNetStatType(t *testing.T) {
 	expected := NetStat{
@@ -55,5 +76,3 @@ func TestNetIocounters(t *testing.T) {
 
 	assert.IsType(t, expected, actual, "`netIocounters()` should return a []net.IOCountersStat slice")
 }
-
-//TODO add tests for errors --> must return empty/zero values

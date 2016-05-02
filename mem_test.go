@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"strconv"
 	"testing"
 
@@ -31,6 +33,25 @@ func TestGetRAMStat(t *testing.T) {
 
 	assert.NoError(t, err, "`getRAMStat()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getRAMStat` should be equal to main.memStat{total:\"1.00\", used:\"1.00\", usedPercent:100}")
+
+	// teardown
+	memVirtualMemory = oldMemVirtualMemory
+}
+
+// TestGetRAMStatErrorCase1 test than getRAMStat() transmit the error from mem.VirtualMemory()
+func TestGetRAMStatErrorCase1(t *testing.T) {
+	// setup the faking of `mem.VirtualMemory()`
+	oldMemVirtualMemory := memVirtualMemory
+	memVirtualMemory = func() (*mem.VirtualMemoryStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	//test
+	expected := errors.New("Error 1")
+	_, actual := getRAMStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getRAMStat()` should be an error equal to \"Error 1\"")
 
 	// teardown
 	memVirtualMemory = oldMemVirtualMemory
@@ -79,6 +100,25 @@ func TestGetSwapStat(t *testing.T) {
 	memSwapMemory = OldMemSwapMemory
 }
 
+// TestGetSwapStatErrorCase1 test than getRAMStat() transmit the error from mem.SwapMemory()
+func TestGetSwapStatErrorCase1(t *testing.T) {
+	// setup the faking of `mem.VirtualMemory()`
+	oldMemSwapMemory := memSwapMemory
+	memSwapMemory = func() (*mem.SwapMemoryStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	//test
+	expected := errors.New("Error 1")
+	_, actual := getSwapStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getSwapStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	memSwapMemory = oldMemSwapMemory
+}
+
 // TestGetSwapStatType test if `getSwapStat()` return a `memStat` type and if each fields have the correct types
 func TestGetSwapStatType(t *testing.T) {
 	expected := memStat{
@@ -109,5 +149,3 @@ func TestMemSwapMemory(t *testing.T) {
 
 	assert.IsType(t, expected, actual, "`memSwapMemory()` should return a *mem.SwapMemoryStat type")
 }
-
-//TODO add tests for errors --> must return empty/zero values

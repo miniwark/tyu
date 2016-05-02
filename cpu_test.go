@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"strconv"
 	"testing"
 	"time"
@@ -45,6 +47,24 @@ func TestGetCPUStat(t *testing.T) {
 	cpuInfo = oldcpuInfo
 }
 
+// TestGetCPUStatErrorCase1 test than getCPUStat() transmit the error from cpu.Info()
+func TestGetCPUStatErrorCase1(t *testing.T) {
+	// setup the faking of `cpu.Info()`
+	oldcpuInfo := cpuInfo
+	cpuInfo = func() ([]cpu.InfoStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	//test
+	expected := errors.New("Error 1")
+	_, actual := getCPUStat()
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getCPUStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	cpuInfo = oldcpuInfo
+}
+
 // TestGetCPUStatType test if `getCPUStat()` return a `cpuStat` type and if each fields have the correct types
 func TestGetCPUStatType(t *testing.T) {
 	expected := cpuStat{
@@ -77,6 +97,24 @@ func TestGetCPUPercent(t *testing.T) {
 
 	assert.NoError(t, err, "`getCPUPercent()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getCPUPercent` should be equal to --> 100")
+
+	// teardown
+	cpuPercent = oldcpuPercent
+}
+
+// TestGetCPUPercentErrorCase1 test than getCPUPercent() transmit the error from cpu.Percent()
+func TestGetCPUPercentErrorCase1(t *testing.T) {
+	// setup the faking of `cpu.Percent()`
+	oldcpuPercent := cpuPercent
+	cpuPercent = func(interval time.Duration, percpu bool) ([]float64, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	//test
+	expected := errors.New("Error 1")
+	_, actual := getCPUPercent()
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getCPUPercent()` should be an error equal to \"Error 1\"")
 
 	// teardown
 	cpuPercent = oldcpuPercent

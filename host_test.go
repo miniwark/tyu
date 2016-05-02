@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"syscall"
 	"testing"
 
@@ -56,6 +58,56 @@ func TestGetHostStat(t *testing.T) {
 	getUname = oldgetUname
 }
 
+// TestGetHostStatErrorCase1 test than getHostStat() transmit the error from host.Info()
+func TestGetHostStatErrorCase1(t *testing.T) {
+	// setup the faking of `host.Info()`
+	oldHostInfo := hostInfo
+	hostInfo = func() (*host.InfoStat, error) {
+		err := errors.New("Error 1")
+		return nil, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := getHostStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getHostStat()` should be an error equal to \"Error 1\"")
+
+	// teardown
+	hostInfo = oldHostInfo
+}
+
+// TestGetHostStatErrorCase2 test than getHostStat() transmit the error from getUname()
+func TestGetHostStatErrorCase2(t *testing.T) {
+	// setup the faking of `host.Info()`
+	oldHostInfo := hostInfo
+	hostInfo = func() (*host.InfoStat, error) {
+		ret := &host.InfoStat{
+			Hostname:        "abc",
+			OS:              "linux", // we need a `Linux` OS if we want to test datas retrivied by `getUname()`
+			Platform:        "abc",
+			PlatformVersion: "abc",
+		}
+		return ret, nil
+	}
+	oldgetUname := getUname
+	getUname = func() (syscall.Utsname, error) {
+		ret := syscall.Utsname{}
+		err := errors.New("Error 2")
+		return ret, err
+	}
+
+	// test
+	expected := errors.New("Error 2")
+	_, actual := getHostStat()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getHostStat()` should be an error equal to \"Error 2\"")
+
+	// teardown
+	hostInfo = oldHostInfo
+	getUname = oldgetUname
+}
+
 // TestGetHostStatType test if `getHostStat()` return a `hostStat` type and if each fields have the correct types
 func TestGetHostStatType(t *testing.T) {
 	expected := hostStat{
@@ -94,6 +146,26 @@ func TestGetUptime(t *testing.T) {
 
 	assert.NoError(t, err, "`getUptime()` should not have returned an error")
 	assert.Equal(t, expected, actual, "`getUptime` should be equal to \"24h0m0s\"")
+
+	// teardown
+	hostUptime = oldHostUptime
+}
+
+// TestGetUptimeErrorCase1 test than getUptime() transmit the error from host.Uptime()
+func TestGetUptimeErrorCase1(t *testing.T) {
+	// setup the faking of `host.Info()`
+	oldHostUptime := hostUptime
+	hostUptime = func() (uint64, error) {
+		ret := uint64(0)
+		err := errors.New("Error 1")
+		return ret, err
+	}
+
+	// test
+	expected := errors.New("Error 1")
+	_, actual := getUptime()
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`getUptime()` should be an error equal to \"Error 1\"")
 
 	// teardown
 	hostUptime = oldHostUptime

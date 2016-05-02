@@ -18,11 +18,11 @@ type diskStat struct {
 // getDiskStat return a slice of physical disks usage statistics by using `gopesutil` package
 func getDiskStat() (ret []diskStat, err error) {
 	// get the partitions list
-	partitions, err := diskPartitions(false) //`false` to get only physical disks
+	partitions, err := diskPartitions(false) // the `false` argument get only physical disks
 	if err == nil {
 		// get usage stats for each partitions
 		for i := range partitions {
-			disk, err1 := diskUsage(partitions[i].Mountpoint) //TODO rename `err` variables names to avoid confusion ?
+			disk, err1 := diskUsage(partitions[i].Mountpoint)
 			if err1 == nil {
 				d := diskStat{
 					device:      partitions[i].Device,

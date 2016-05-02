@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"regexp"
 	"testing"
 
@@ -27,13 +29,45 @@ func TestReadAndTrimFile(t *testing.T) {
 	//TODO improve tests with Equal instead of Regexp by using a temp file ?
 }
 
-// TODO maybe stick to the testing stdlib intead of testify
-// func TestInt8SliceToString(t *testing.T) {
-// 	char := []int8{49, 50, 51}
-// 	expected := "123"
-// 	actual := int8SliceToString(char)
-// 	if actual != expected {
-// 		t.Error("expected:", expected)
-// 		t.Error("actual  :", actual)
-// 	}
-// }
+// TestReadAndTrimFileErrorCase1 test than readAndTrimFile() transmit the error from ioutil.ReadFile()
+//func TestReadAndTrimFileErrorCase1(t *testing.T) {
+//TODO
+//}
+
+// TestAppendErrorCase1 tests the case where appendError() was provided with two errors as arguments
+func TestAppendErrorCase1(t *testing.T) {
+	err1 := errors.New("Error 1")
+	err2 := errors.New("Error 2")
+
+	expected := errors.New("Error 1; Error 2")
+	actual := appendError(err1, err2)
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`appendError(errors.New(\"Error 1\"), errors.New(\"Error 2\"))` should be an error equal to \"Error 1; Error 2\"")
+}
+
+// TestAppendErrorCase2 tests the case where appendError() was provided with one error in the first arguments
+func TestAppendErrorCase2(t *testing.T) {
+	err1 := errors.New("Error 1")
+
+	expected := errors.New("Error 1")
+	actual := appendError(err1, nil)
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`appendError(errors.New(\"Error 1\"), nil)` should be an error equal to \"Error 1\"")
+}
+
+// TestAppendErrorCase3 tests the case where appendError() was provided with one error in the seconds arguments
+func TestAppendErrorCase3(t *testing.T) {
+	err2 := errors.New("Error 2")
+
+	expected := errors.New("Error 2")
+	actual := appendError(nil, err2)
+
+	assert.EqualError(t, expected, fmt.Sprintf("%v", actual), "`appendError(nil, errors.New(\"Error 2\"))` should be an error equal to \"Error 2\"")
+}
+
+// TestAppendErrorNil tests the case where appendError() was provided with nil errors as arguments
+func TestAppendErrorNil(t *testing.T) {
+	err := appendError(nil, nil)
+
+	assert.NoError(t, err, "`appendError(nil, nil)` should not be an error")
+}

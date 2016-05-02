@@ -19,7 +19,7 @@ func int8SliceToString(char []int8) string {
 
 // readAndTrimFile read a text file and return the content without the EOF carriage return
 // this utility may be used with files from `/sys` or `/proc` file systems
-func readAndTrimFile(path string) (ret string, err error) {
+var readAndTrimFile = func(path string) (ret string, err error) {
 	ret = ""
 	data, err := ioutil.ReadFile(path)
 	if err == nil {
