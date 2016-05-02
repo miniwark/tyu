@@ -1,6 +1,8 @@
 Version 0.2
 ===========
 
+First stable version.
+
 * Add tests with 70% coverage
 * Add command line options (help & version)
 * Refactor internal variables and function names
