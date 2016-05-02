@@ -58,6 +58,7 @@ Version 0.2
 
 Version 0.3
 -----------
+- [ ] Try to refactor the code with methods and interfaces
 - [ ] Improve testing: try to get rid of the var func() wrappers
 - [ ] Improve documentation
 - [ ] Publish on sites like go-search.org, golanglibs.com, gopkg.in, gobuild.io...
