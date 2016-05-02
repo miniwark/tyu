@@ -2,9 +2,9 @@ Version 0.2
 ===========
 
 * Add tests with 70% coverage
-* Add command line options
-* Refactor variables and function names
-* Refactor error checking
+* Add command line options (help & version)
+* Refactor internal variables and function names
+* Refactor error handling
 
 
 Version 0.1
