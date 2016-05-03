@@ -1,0 +1,7 @@
+# codecov.io settings
+
+codecov:
+  branch: master
+
+coverage:
+  range: "0...90"
